@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
@@ -113,7 +114,7 @@ public class SignupPage {
 		JButton button = new JButton("Signup");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String username=uField.getText();
+				String username=uField.getText().toLowerCase();
 				String password=new String(pField.getPassword());
 				String cPassword=new String(cpasswordField.getPassword());
 				if(validator.checkPassword(password) && password.equals(cPassword))
@@ -121,15 +122,30 @@ public class SignupPage {
 					try {
 						String query="INSERT INTO `users`(`username`, `password`, `role`) VALUES (?,?,?)";
 						Connection con=dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
-						PreparedStatement pst;
-						pst=con.prepareStatement(query);
-						pst.setString(1, username);
-						pst.setString(2,password);
-						pst.setString(3, "student");
-						pst.executeUpdate();
-						JOptionPane.showMessageDialog(null, "You are registered.Login to continue");
-						new LoginPage();
-						frame.setVisible(false);
+						String query1="SELECT role FROM `users` WHERE username=?";
+						PreparedStatement pst1 ;
+						pst1=con.prepareStatement(query1);
+						pst1.setString(1, username);
+						ResultSet rs=pst1.executeQuery();
+						if(rs.next())
+						{
+							JOptionPane.showMessageDialog(null, "Username already exists");
+						}
+						else
+						{
+							PreparedStatement pst;
+							pst=con.prepareStatement(query);
+							pst.setString(1, username);
+							pst.setString(2,password);
+							pst.setString(3, "student");
+							pst.executeUpdate();
+							JOptionPane.showMessageDialog(null, "You are registered.Login to continue");
+							new LoginPage();
+							frame.setVisible(false);
+						}
+						
+						
+						
 						con.close();
 					}
 					catch(Exception ex)
@@ -138,9 +154,13 @@ public class SignupPage {
 						
 					}
 				}
+				else if(!validator.checkPassword(password))
+				{
+					JOptionPane.showMessageDialog(null, "Password must have one special character,uppercase, lowercase and must be atleast 8 characters ");
+				}
 				else if(!password.equals(cPassword))
 				{
-					System.out.println("Password do not match");
+					JOptionPane.showMessageDialog(null, "Password do not match");
 				}
 				
 				
