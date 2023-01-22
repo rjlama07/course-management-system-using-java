@@ -21,6 +21,7 @@ public class LoginPage {
 
 	private JFrame frame;
 	private JPasswordField passwordField;
+	
 
 	/**
 	 * Launch the application.
@@ -52,12 +53,12 @@ public class LoginPage {
 		frame = new JFrame();
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
-		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
+		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(116, 192, 67));
 		panel.setBounds(0, 0, 272, 438);
+		panel.setBackground(new Color(116, 192, 67));
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -67,37 +68,69 @@ public class LoginPage {
 		panel.add(lblNewLabel_1);
 		
 		JButton button = new JButton("Login");
+		button.setBounds(322, 254, 327, 44);
 		button.setOpaque(true);
 		button.setBorderPainted(false);
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		
 		button.setForeground(new Color(3, 248, 217));
 		button.setFont(new Font("Courier New", Font.BOLD, 12));
 		button.setBackground(new Color(116, 192, 67));
-		button.setBounds(322, 254, 327, 44);
 		frame.getContentPane().add(button);
 		
-		TextField textField = new TextField();
+		final TextField textField = new TextField();
 		textField.setBounds(322, 135, 327, 35);
 		frame.getContentPane().add(textField);
 		frame.setVisible(true);
 		JLabel lblNewLabel = new JLabel("USERNAME");
+		lblNewLabel.setBounds(322, 105, 116, 23);
 		
 		lblNewLabel.setFont(new Font("MS UI Gothic", Font.BOLD, 14));
-		lblNewLabel.setBounds(322, 105, 116, 23);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(322, 176, 116, 29);
 		lblPassword.setFont(new Font("MS UI Gothic", Font.BOLD, 14));
-		lblPassword.setBounds(322, 163, 116, 35);
 		frame.getContentPane().add(lblPassword);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(322, 204, 327, 35);
 		frame.getContentPane().add(passwordField);
+		
+		final JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setFont(new Font("Lao Sangam MN", Font.PLAIN, 10));
+		lblNewLabel_2.setForeground(new Color(255, 69, 51));
+		lblNewLabel_2.setBounds(332, 310, 164, 16);
+		frame.getContentPane().add(lblNewLabel_2);
 		frame.setBounds(100, 100, 729, 447);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Validator validate=new Validator();
+				String username=textField.getText().toLowerCase();
+				String password=new String(passwordField.getPassword());
+				if(validate.checkEmail(username) && validate.checkPassword(password))
+				{
+					new StudentDashboard();
+					lblNewLabel_2.setText("");
+					frame.setVisible(false);
+				}
+				else if(validate.checkEmail(username) && !validate.checkPassword(password))
+				{
+					lblNewLabel_2.setText("Invalid password");
+						
+				}
+				else if(!validate.checkEmail(username) && validate.checkPassword(password))
+				{
+					lblNewLabel_2.setText("Invalid username");
+						
+				}
+				else 
+				{
+					lblNewLabel_2.setText("Invalid username  password");
+				}
+				
+				
+			}
+		});
 	}
 }
