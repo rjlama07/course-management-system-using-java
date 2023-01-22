@@ -101,6 +101,20 @@ public class LoginPage {
 		lblNewLabel_2.setForeground(new Color(255, 69, 51));
 		lblNewLabel_2.setBounds(332, 310, 164, 16);
 		frame.getContentPane().add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("Not a member?");
+		lblNewLabel_3.setBounds(441, 349, 101, 16);
+		frame.getContentPane().add(lblNewLabel_3);
+		
+		JButton textbutton = new JButton("Sign up");
+		textbutton.setForeground(new Color(10, 1, 255));
+		textbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		textbutton.setBorderPainted(false);
+		textbutton.setBounds(441, 370, 91, 21);
+		frame.getContentPane().add(textbutton);
 		frame.setBounds(100, 100, 729, 447);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		button.addActionListener(new ActionListener() {
