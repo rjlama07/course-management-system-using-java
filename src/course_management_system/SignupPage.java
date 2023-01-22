@@ -2,17 +2,28 @@ package course_management_system;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import javax.swing.JTextField;
+
+
+
+import database.DatabaseConnector;
+
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class SignupPage {
@@ -40,15 +51,17 @@ public class SignupPage {
 
 	/**
 	 * Create the application.
+	 * @throws SQLException 
 	 */
-	public SignupPage() {
+	public SignupPage() throws SQLException {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws SQLException 
 	 */
-	private void initialize() {
+	private void initialize() throws SQLException {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 607, 422);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,10 +108,42 @@ public class SignupPage {
 		cpasswordField = new JPasswordField();
 		cpasswordField.setBounds(210, 221, 275, 38);
 		panel.add(cpasswordField);
-		
+		final DatabaseConnector dc=new DatabaseConnector();
+		final Validator validator=new Validator();
 		JButton button = new JButton("Signup");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String username=uField.getText();
+				String password=new String(pField.getPassword());
+				String cPassword=new String(cpasswordField.getPassword());
+				if(validator.checkPassword(password) && password.equals(cPassword))
+				{
+					try {
+						String query="INSERT INTO `users`(`username`, `password`, `role`) VALUES (?,?,?)";
+						Connection con=dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
+						PreparedStatement pst;
+						pst=con.prepareStatement(query);
+						pst.setString(1, username);
+						pst.setString(2,password);
+						pst.setString(3, "student");
+						pst.executeUpdate();
+						JOptionPane.showMessageDialog(null, "You are registered.Login to continue");
+						new LoginPage();
+						frame.setVisible(false);
+						con.close();
+					}
+					catch(Exception ex)
+					{
+						JOptionPane.showMessageDialog(null, ex);
+						
+					}
+				}
+				else if(!password.equals(cPassword))
+				{
+					System.out.println("Password do not match");
+				}
+				
+				
 			}
 		});
 		button.setBounds(364, 271, 116, 29);

@@ -5,15 +5,21 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Scrollbar;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.TextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+
+import database.DatabaseConnector;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -118,38 +124,66 @@ public class LoginPage {
 		frame.getContentPane().add(textbutton);
 		frame.setBounds(100, 100, 729, 447);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		final DatabaseConnector dc=new DatabaseConnector();
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Validator validate=new Validator();
+				
 				String username=textField.getText().toLowerCase();
 				String password=new String(passwordField.getPassword());
-				if(validate.checkEmail(username) && validate.checkPassword(password))
-				{
-					new StudentDashboard();
-					lblNewLabel_2.setText("");
-					frame.setVisible(false);
-				}
-				else if(validate.checkEmail(username) && !validate.checkPassword(password))
-				{
-					lblNewLabel_2.setText("Invalid password");
+				try {
+					
+					Connection con=dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
+					String query="SELECT role FROM `users` WHERE username=? and password=?";
+					PreparedStatement pst=con.prepareStatement(query);
+					pst.setString(1, username);
+					pst.setString(2,password);
+					ResultSet rs=pst.executeQuery();
+					if(rs.next())
+					{
 						
-				}
-				else if(!validate.checkEmail(username) && validate.checkPassword(password))
-				{
-					lblNewLabel_2.setText("Invalid username");
+					    String role=rs.getString("role");
+					    if(role.equals("student"))
+					    {
+					    	new StudentDashboard();
+					    	frame.setVisible(false);
+					    }
+					    else if(role.equals("teacher"))
+					    {
+					    	new TeacherDashboard();
+					    	frame.setVisible(false);	
+					    }
+					    else if(role.equals("admin"))
+					    {
+					    	JOptionPane.showMessageDialog(null, "Welcome admin");
+					    }
+					    else 
+					    {
+					    	JOptionPane.showMessageDialog(null, "Something went wrong!!");
+					    }
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Username or password do not match");
 						
+					}
+					
 				}
-				else 
-				{
-					lblNewLabel_2.setText("Invalid username  password");
+				catch(Exception ex) {
+					JOptionPane.showMessageDialog(null, ex);
 				}
+				
 				
 				
 			}
 		});
 		textbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new SignupPage();
+				try {
+					new SignupPage();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setVisible(false);
 			}});
 	}
