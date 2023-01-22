@@ -82,8 +82,9 @@ public class LoginPage {
 		TextField textField = new TextField();
 		textField.setBounds(322, 135, 327, 35);
 		frame.getContentPane().add(textField);
-		
+		frame.setVisible(true);
 		JLabel lblNewLabel = new JLabel("USERNAME");
+		
 		lblNewLabel.setFont(new Font("MS UI Gothic", Font.BOLD, 14));
 		lblNewLabel.setBounds(322, 105, 116, 23);
 		frame.getContentPane().add(lblNewLabel);
