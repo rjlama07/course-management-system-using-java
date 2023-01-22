@@ -14,7 +14,7 @@ import java.awt.Color;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
-public class Splashscreen implements ActionListener{
+public class Splashscreen {
 
 	private static JFrame frame;
 	private static JProgressBar progressBar;
