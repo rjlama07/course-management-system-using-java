@@ -107,13 +107,14 @@ public class LoginPage {
 		frame.getContentPane().add(lblNewLabel_3);
 		
 		JButton textbutton = new JButton("Sign up");
+		textbutton.setBackground(new Color(0, 255, 235));
 		textbutton.setForeground(new Color(10, 1, 255));
 		textbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		textbutton.setBorderPainted(false);
-		textbutton.setBounds(441, 370, 91, 21);
+		textbutton.setBounds(518, 348, 91, 21);
 		frame.getContentPane().add(textbutton);
 		frame.setBounds(100, 100, 729, 447);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -146,5 +147,10 @@ public class LoginPage {
 				
 			}
 		});
+		textbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SignupPage();
+				frame.setVisible(false);
+			}});
 	}
 }
