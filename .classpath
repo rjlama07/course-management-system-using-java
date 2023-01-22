@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="Validation"/>
+	<classpathentry kind="src" path="Database"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -13,5 +14,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/rites/OneDrive - Hetauda School of Management and Social Sciences/Desktop/mysql-connector-java-8.0.7-dmr-bin.jar"/>
+	<classpathentry kind="lib" path="/Users/rjlama/Documents/mysql-connector-java-8.0.7-dmr-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

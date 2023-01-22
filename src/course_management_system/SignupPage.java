@@ -33,6 +33,8 @@ public class SignupPage {
 	private JTextField uField;
 	private JPasswordField pField;
 	private JPasswordField cpasswordField;
+	private JTextField textField;
+	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -84,30 +86,30 @@ public class SignupPage {
 		
 		JLabel lblNewLabel_1 = new JLabel("Username");
 		lblNewLabel_1.setFont(new Font("Mukta", Font.PLAIN, 12));
-		lblNewLabel_1.setBounds(210, 78, 61, 16);
+		lblNewLabel_1.setBounds(210, 116, 61, 16);
 		panel.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Password");
 		lblNewLabel_1_1.setFont(new Font("Mukta", Font.PLAIN, 12));
-		lblNewLabel_1_1.setBounds(210, 142, 61, 16);
+		lblNewLabel_1_1.setBounds(210, 174, 61, 16);
 		panel.add(lblNewLabel_1_1);
 		
 		uField = new JTextField();
-		uField.setBounds(210, 94, 275, 38);
+		uField.setBounds(210, 133, 275, 38);
 		panel.add(uField);
 		uField.setColumns(10);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("Confirm password");
 		lblNewLabel_1_1_1.setFont(new Font("Mukta", Font.PLAIN, 12));
-		lblNewLabel_1_1_1.setBounds(210, 204, 90, 16);
+		lblNewLabel_1_1_1.setBounds(211, 230, 90, 16);
 		panel.add(lblNewLabel_1_1_1);
 		
 		pField = new JPasswordField();
-		pField.setBounds(210, 154, 275, 38);
+		pField.setBounds(210, 191, 275, 38);
 		panel.add(pField);
 		
 		cpasswordField = new JPasswordField();
-		cpasswordField.setBounds(210, 221, 275, 38);
+		cpasswordField.setBounds(210, 247, 275, 38);
 		panel.add(cpasswordField);
 		final DatabaseConnector dc=new DatabaseConnector();
 		final Validator validator=new Validator();
@@ -120,7 +122,7 @@ public class SignupPage {
 				if(validator.checkPassword(password) && password.equals(cPassword))
 				{
 					try {
-						String query="INSERT INTO `users`(`username`, `password`, `role`) VALUES (?,?,?)";
+						String query="INSERT INTO `users`(`username`, `password`, `role`,`firstname`,`lastname`) VALUES (?,?,?,?,?)";
 						Connection con=dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
 						String query1="SELECT role FROM `users` WHERE username=?";
 						PreparedStatement pst1 ;
@@ -136,8 +138,11 @@ public class SignupPage {
 							PreparedStatement pst;
 							pst=con.prepareStatement(query);
 							pst.setString(1, username);
-							pst.setString(2,password);
+							pst.setString(2,password);s
 							pst.setString(3, "student");
+							pst.setString(4, textField.getText());
+							pst.setString(5, textField_1.getText());
+							
 							pst.executeUpdate();
 							JOptionPane.showMessageDialog(null, "You are registered.Login to continue");
 							new LoginPage();
@@ -166,7 +171,7 @@ public class SignupPage {
 				
 			}
 		});
-		button.setBounds(364, 271, 116, 29);
+		button.setBounds(369, 297, 116, 29);
 		button.setOpaque(true);
 		button.setBorderPainted(false);
 		
@@ -176,15 +181,35 @@ public class SignupPage {
 		panel.add(button);
 		
 		JButton btnNewButton = new JButton("Login");
-		btnNewButton.setBounds(370, 334, 84, 21);
+		btnNewButton.setBounds(372, 350, 84, 21);
 		panel.add(btnNewButton);
 		btnNewButton.setForeground(new Color(10, 1, 255));
 		btnNewButton.setBackground(new Color(0, 255, 235));
 		btnNewButton.setBorderPainted(false);
 		
 		JLabel lblNewLabel_2 = new JLabel("Already a member?");
-		lblNewLabel_2.setBounds(275, 335, 128, 16);
+		lblNewLabel_2.setBounds(273, 351, 128, 16);
 		panel.add(lblNewLabel_2);
+		
+		JLabel fname = new JLabel("first name");
+		fname.setFont(new Font("Mukta", Font.PLAIN, 12));
+		fname.setBounds(210, 68, 61, 16);
+		panel.add(fname);
+		
+		JLabel lname = new JLabel("last name");
+		lname.setFont(new Font("Mukta", Font.PLAIN, 12));
+		lname.setBounds(357, 68, 61, 16);
+		panel.add(lname);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(210, 82, 128, 29);
+		panel.add(textField);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(350, 82, 128, 29);
+		panel.add(textField_1);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new LoginPage();
