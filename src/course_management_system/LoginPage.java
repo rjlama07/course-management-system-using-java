@@ -15,6 +15,7 @@ import java.awt.TextField;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 public class LoginPage {
 
@@ -52,10 +53,11 @@ public class LoginPage {
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(116, 192, 67));
-		panel.setBounds(0, 0, 272, 410);
+		panel.setBounds(0, 0, 272, 438);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -64,12 +66,14 @@ public class LoginPage {
 		lblNewLabel_1.setBounds(10, 115, 284, 161);
 		panel.add(lblNewLabel_1);
 		
-		Button button = new Button("Login");
+		JButton button = new JButton("Login");
+		button.setOpaque(true);
+		button.setBorderPainted(false);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		button.setForeground(new Color(255, 255, 255));
+		button.setForeground(new Color(3, 248, 217));
 		button.setFont(new Font("Courier New", Font.BOLD, 12));
 		button.setBackground(new Color(116, 192, 67));
 		button.setBounds(322, 254, 327, 44);
