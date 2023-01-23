@@ -11,6 +11,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="external_jar/mysql-connector-java-8.0.7-dmr-bin.jar"/>
+	<classpathentry kind="lib" path="/Users/rjlama/Documents/CourseManagement/external_jar/mysql-connector-java-8.0.7-dmr-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

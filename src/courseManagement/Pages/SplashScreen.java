@@ -15,18 +15,16 @@ import javax.swing.SwingConstants;
 public class SplashScreen extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private static JProgressBar progressBar;
-	 private int i;
-	 private static Timer timer;
-	
+	private int i;
+	private static Timer timer;
 
 	/**
 	 * Create the panel.
 	 */
 	public SplashScreen(final JFrame frame) {
-		final JPanel panel=new JPanel();
-		
+		final JPanel panel = new JPanel();
 		panel.setBackground(new Color(243, 242, 241));
 		panel.setLayout(null);
 		frame.getContentPane().add(panel);
@@ -36,8 +34,8 @@ public class SplashScreen extends JPanel {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblNewLabel);
 		panel.setVisible(true);
-		 progressBar = new JProgressBar();
-		 progressBar.setBounds(219, 227, 172, 20);
+		progressBar = new JProgressBar();
+		progressBar.setBounds(219, 227, 172, 20);
 		progressBar.setForeground(new Color(45, 242, 40));
 		panel.add(progressBar);
 		i = 0;
@@ -54,7 +52,6 @@ public class SplashScreen extends JPanel {
 			}
 		});
 		timer.start();
-		
 
 	}
 

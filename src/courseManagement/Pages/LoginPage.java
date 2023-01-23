@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 
 import Connector.DatabaseConnector;
+import dashboard.StudentDashboard;
 
 import java.awt.SystemColor;
 
@@ -120,12 +121,11 @@ public class LoginPage extends JPanel {
 						
 					    String role=rs.getString("role");
 					    String name=rs.getString("firstname");
-					    System.out.println(name);
 					    if(role.equals("student"))
 					    {
-//					    	new StudentDashboard();
+					    	new StudentDashboard(frame,name);
 					    	JOptionPane.showMessageDialog(null, "Login in as Student");
-					    	frame.setVisible(false);
+					         mainPanel.setVisible(false);
 					    }
 					    else if(role.equals("teacher"))
 					    {
@@ -143,6 +143,7 @@ public class LoginPage extends JPanel {
 					}
 					else
 					{
+						
 						JOptionPane.showMessageDialog(null, "Username or password do not match");
 						
 					}
