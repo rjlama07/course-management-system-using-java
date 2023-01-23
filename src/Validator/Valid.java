@@ -1,9 +1,8 @@
-package course_management_system;
-
+package Validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Validator {
+public class Valid {
 	public boolean checkEmail(String email)
     {
         String regex="^(.+)@(\\S+)$";
@@ -20,4 +19,5 @@ public class Validator {
         Matcher matcher=pattern.matcher(p);
         return matcher.matches();
     }
+
 }

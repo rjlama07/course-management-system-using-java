@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>course_management_system</name>
+	<name>courseManagement</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -16,7 +16,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1674412090876</id>
+			<id>1674485215322</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
