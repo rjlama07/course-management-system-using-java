@@ -1,4 +1,4 @@
-package dashboard;
+package courseManagement.Pages.dashboard;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;

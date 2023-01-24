@@ -8,7 +8,11 @@ import javax.swing.JPanel;
 import Connector.DatabaseConnector;
 import Validator.Valid;
 import courseManagement.Pages.LoginPage;
-import dashboard.StudentDashboard;
+import courseManagement.Pages.dashboard.StudentDashboard;
+import exception.InvalidEmail;
+import exception.PasswordDonotMatch;
+import exception.UserAlreadyExist;
+import exception.UserNotFound;
 
 public class Auth {
 	DatabaseConnector dc=new DatabaseConnector();
@@ -56,14 +60,12 @@ public class Auth {
 						}
 						else
 						{
-							
-							JOptionPane.showMessageDialog(null, "Username or password do not match");
-							
+							throw new UserNotFound("User not found");
 						}
 						
 					}
 					catch(Exception ex) {
-						JOptionPane.showMessageDialog(null, ex);
+						JOptionPane.showMessageDialog(null, ex.getMessage());
 					}
 				}
     }
@@ -71,9 +73,10 @@ public class Auth {
 
 	public void Signup(String name,String password,String cPassword,String firstName,String lastName,JFrame frame,String username,JPanel panel){
 		Valid validator=new Valid();
-		if (!validator.checkEmail(username))
+		try{
+			if (!validator.checkEmail(username))
 				{
-					JOptionPane.showMessageDialog(null, "Please enter a valid email");
+					throw new InvalidEmail("Invalid Email! enter valid email");
 
 				}
 				else if (validator.checkPassword(password) && password.equals(cPassword)) {
@@ -86,7 +89,7 @@ public class Auth {
 						pst1.setString(1, username);
 						ResultSet rs = pst1.executeQuery();
 						if (rs.next()) {
-							JOptionPane.showMessageDialog(null, "Username already exists");
+							throw new UserAlreadyExist("User Already Exist");
 						} else {
 							PreparedStatement pst;
 							pst = con.prepareStatement(query);
@@ -102,15 +105,19 @@ public class Auth {
 						}
 						con.close();
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, ex);
+						JOptionPane.showMessageDialog(null, ex.getMessage());
 
 					}
 				} else if (!validator.checkPassword(password)) {
-					JOptionPane.showMessageDialog(null,
-							"Password must have one special character,uppercase, lowercase and must be atleast 8 characters ");
+					 throw new PasswordDonotMatch("Password must have one special character,uppercase, lowercase and must be atleast 8 characters ");
 				} else if (!password.equals(cPassword)) {
-					JOptionPane.showMessageDialog(null, "Password do not match");
+					throw new PasswordDonotMatch("Password do not match");
 				}
+		}
+		catch(Exception ex)
+		{
+			JOptionPane.showMessageDialog(null, ex.getMessage());
+		}
 	}
     
 }
