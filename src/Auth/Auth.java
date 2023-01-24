@@ -1,4 +1,5 @@
 package Auth;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,13 +7,16 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import Connector.DatabaseConnector;
+import Exceptions.InvalidEmail;
+import Exceptions.PasswordDonotMatch;
+import Exceptions.UserAlreadyExist;
+import Exceptions.UserNotFound;
+import Pages.LoginPage;
+import Pages.StudentDashboard;
 import Validator.Valid;
-import courseManagement.Pages.LoginPage;
-import courseManagement.Pages.dashboard.StudentDashboard;
-import exception.InvalidEmail;
-import exception.PasswordDonotMatch;
-import exception.UserAlreadyExist;
-import exception.UserNotFound;
+
+
+
 
 public class Auth {
 	DatabaseConnector dc=new DatabaseConnector();

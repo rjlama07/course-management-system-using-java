@@ -1,23 +1,20 @@
-package courseManagement.Pages;
+package Pages;
 
 import java.awt.Color;
 import java.awt.Font;
-
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 
 import Auth.Auth;
-
-import java.awt.SystemColor;
 
 public class LoginPage extends JPanel {
 	private JPasswordField passwordField;
@@ -33,7 +30,6 @@ public class LoginPage extends JPanel {
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(SystemColor.window);
 		mainPanel.setLayout(null);
-
 		JButton button = new JButton("Login");
 		button.setBounds(273, 261, 278, 44);
 		button.setOpaque(true);
@@ -114,3 +110,4 @@ public class LoginPage extends JPanel {
 
 	}
 }
+

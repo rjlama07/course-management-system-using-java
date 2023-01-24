@@ -1,5 +1,8 @@
-package courseManagement.Pages;
+package Pages;
+
 import javax.swing.JPanel;
+
+
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -89,7 +92,7 @@ public class SignupPannel extends JPanel {
 		passwordField_1 = new JPasswordField();
 		passwordField_1.setBounds(22, 260, 275, 34);
 		panel.add(passwordField_1);
-		JLabel lblNewLabel_3 = new JLabel("Already a member?");
+		JLabel lblNewLabel_3 = new JLabel("Already  member?");
 		lblNewLabel_3.setBounds(25, 351, 121, 16);
 		panel.add(lblNewLabel_3);
 
