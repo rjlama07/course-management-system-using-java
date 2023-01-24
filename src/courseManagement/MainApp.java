@@ -37,10 +37,12 @@ public class MainApp {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize the contents of the frame.s
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle("Course Management System");
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 668, 406);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel = new JPanel();

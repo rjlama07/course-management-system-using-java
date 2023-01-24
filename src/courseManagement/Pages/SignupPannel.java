@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
+import Auth.Auth;
 import Connector.DatabaseConnector;
 import Validator.Valid;
 
@@ -80,7 +81,7 @@ public class SignupPannel extends JPanel {
 		textField_1.setBounds(22, 153, 275, 34);
 		panel.add(textField_1);
 
-		JLabel lblNewLabel_1_2_1 = new JLabel("username");
+		JLabel lblNewLabel_1_2_1 = new JLabel("Email");
 		lblNewLabel_1_2_1.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 11));
 		lblNewLabel_1_2_1.setBounds(25, 130, 130, 16);
 		panel.add(lblNewLabel_1_2_1);
@@ -113,8 +114,7 @@ public class SignupPannel extends JPanel {
 		textbutton.setBorderPainted(false);
 		textbutton.setBounds(121, 346, 91, 29);
 		panel.add(textbutton);
-		final Valid validator = new Valid();
-
+        final Auth auth=new Auth();
 		JButton button = new JButton("Submit");
 		button.setBounds(25, 306, 163, 33);
 		button.setOpaque(true);
@@ -130,42 +130,7 @@ public class SignupPannel extends JPanel {
 				String username = textField_1.getText().toLowerCase();
 				String cPassword = new String(passwordField_1.getPassword());
 				String password = new String(passwordField.getPassword());
-				if (validator.checkPassword(password) && password.equals(cPassword)) {
-					try {
-						String query = "INSERT INTO `users`(`username`, `password`, `role`,`firstname`,`lastname`) VALUES (?,?,?,?,?)";
-						Connection con = dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
-						String query1 = "SELECT role FROM `users` WHERE username=?";
-						PreparedStatement pst1;
-						pst1 = con.prepareStatement(query1);
-						pst1.setString(1, username);
-						ResultSet rs = pst1.executeQuery();
-						if (rs.next()) {
-							JOptionPane.showMessageDialog(null, "Username already exists");
-						} else {
-							PreparedStatement pst;
-							pst = con.prepareStatement(query);
-							pst.setString(1, username);
-							pst.setString(2, password);
-							pst.setString(3, "student");
-							pst.setString(4, firstName);
-							pst.setString(5, lastName);
-							pst.executeUpdate();
-							JOptionPane.showMessageDialog(null, "You are registered.Login to continue");
-							new LoginPage(frame);
-							panel.setVisible(false);
-						}
-						con.close();
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, ex);
-
-					}
-				} else if (!validator.checkPassword(password)) {
-					JOptionPane.showMessageDialog(null,
-							"Password must have one special character,uppercase, lowercase and must be atleast 8 characters ");
-				} else if (!password.equals(cPassword)) {
-					JOptionPane.showMessageDialog(null, "Password do not match");
-				}
-
+				auth.Signup(username, password, cPassword, firstName, lastName, frame, username, panel);
 			}
 		});
 		panel.add(button);
