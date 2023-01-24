@@ -1,14 +1,10 @@
 package Auth;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.xml.validation.Validator;
-
 import Connector.DatabaseConnector;
 import Validator.Valid;
 import courseManagement.Pages.LoginPage;

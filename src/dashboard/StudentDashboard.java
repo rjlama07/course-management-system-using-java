@@ -5,6 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+
+import converter.Greet;
+
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
@@ -31,7 +34,8 @@ public class StudentDashboard extends JPanel {
 		mainPanel.add(panel);
 		panel.setLayout(null);
 		JLabel wName = new JLabel();
-		wName.setText("Welcome "+name);
+		Greet greet=new Greet();
+		wName.setText(greet.greetUser(name));
 		wName.setBounds(26, 37, 173, 32);
 		panel.add(wName);
 		

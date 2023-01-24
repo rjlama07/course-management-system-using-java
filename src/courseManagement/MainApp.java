@@ -1,12 +1,8 @@
 package courseManagement;
-
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import courseManagement.Pages.SplashScreen;
-
 import java.awt.BorderLayout;
 
 public class MainApp {

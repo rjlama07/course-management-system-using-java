@@ -1,24 +1,15 @@
 package courseManagement.Pages;
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-
 import Auth.Auth;
-import Connector.DatabaseConnector;
-import Validator.Valid;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import javax.swing.JPasswordField;
 
@@ -122,7 +113,6 @@ public class SignupPannel extends JPanel {
 		button.setForeground(new Color(3, 248, 217));
 		button.setFont(new Font("Courier New", Font.BOLD, 12));
 		button.setBackground(new Color(116, 192, 67));
-		final DatabaseConnector dc = new DatabaseConnector();
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String firstName = textField.getText().toLowerCase();
