@@ -33,7 +33,7 @@ public class Auth {
 					try {
 					
 						Connection con=dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
-						String query="SELECT * FROM `users` WHERE username=? and password=?";
+						String query="SELECT * FROM `users` WHERE email=? and password=?";
 						PreparedStatement pst=con.prepareStatement(query);
 						pst.setString(1, username);
 						pst.setString(2,password);
@@ -43,7 +43,7 @@ public class Auth {
 							user.setRole(rs.getString("role"));
 							user.setFirstName(rs.getString("firstname"));
 							user.setPassword(rs.getString("password"));
-							user.setEmail(rs.getString("username"));
+							user.setEmail(rs.getString("email"));
 							user.setLastName(rs.getString("lastname"));
 							
 							if(user.getRole().equals("student"))
@@ -90,9 +90,9 @@ public class Auth {
 				}
 				else if (validator.checkPassword(user.getPassword()) && user.getPassword().equals(user.getCpassword())) {
 					try {
-						String query = "INSERT INTO `users`(`username`, `password`, `role`,`firstname`,`lastname`) VALUES (?,?,?,?,?)";
+						String query = "INSERT INTO `users`(`email`, `password`, `role`,`firstname`,`lastname`) VALUES (?,?,?,?,?)";
 						Connection con = dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
-						String query1 = "SELECT role FROM `users` WHERE username=?";
+						String query1 = "SELECT role FROM `users` WHERE email=?";
 						PreparedStatement pst1;
 						pst1 = con.prepareStatement(query1);
 						pst1.setString(1, user.getEmail());

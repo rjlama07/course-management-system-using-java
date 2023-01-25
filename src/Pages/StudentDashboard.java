@@ -8,8 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 import Connector.DatabaseConnector;
 import Controller.Greet;
@@ -28,6 +35,8 @@ import java.awt.CardLayout;
 import javax.swing.JPasswordField;
 import java.awt.Font;
 import javax.swing.JCheckBox;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 public class StudentDashboard extends JPanel {
 
@@ -35,6 +44,7 @@ public class StudentDashboard extends JPanel {
 	private JPasswordField passwordField;
 	private JPasswordField newPasswordField;
 	private JPasswordField cPasswordfield;
+	private JTable table;
 
 	/**
 	 * Create the panel.
@@ -73,7 +83,7 @@ public class StudentDashboard extends JPanel {
 		panel.add(dashboardButton);
 		
 		JButton settingButton = new JButton("setting");
-		settingButton.setBounds(31, 213, 207, 29);
+		settingButton.setBounds(31, 250, 207, 29);
 		panel.add(settingButton);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
@@ -100,11 +110,11 @@ public class StudentDashboard extends JPanel {
 		logoutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int a=JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?","Select",JOptionPane.YES_NO_OPTION);
-				if(a==0 )
+				if(a==0)
 				{
 					new LoginPage(frame);
 					mainPanel.setVisible(false);
-					
+					JOptionPane.showMessageDialog(null, "Log out sucessfully");
 				}
 
 			}
@@ -112,6 +122,11 @@ public class StudentDashboard extends JPanel {
 		logoutButton.setBorderPainted(false);
 		logoutButton.setBounds(31, 394, 207, 29);
 		panel.add(logoutButton);
+		
+		JButton viewTeacherButton = new JButton("View Teacher");
+		viewTeacherButton.setBorderPainted(false);
+		viewTeacherButton.setBounds(31, 209, 207, 29);
+		panel.add(viewTeacherButton);
 		JLabel lblNewLabel_2 = new JLabel("Settings");
 		lblNewLabel_2.setBounds(21, 20, 106, 26);
 		settingPannel.add(lblNewLabel_2);
@@ -159,6 +174,21 @@ public class StudentDashboard extends JPanel {
 		chckbxNewCheckBox.setBounds(26, 261, 128, 23);
 		
 		settingPannel.add(chckbxNewCheckBox);
+		
+		JPanel teacherPannel = new JPanel();
+		layeredPane.add(teacherPannel, "name_100663201273375");
+		teacherPannel.setLayout(null);
+		
+		JLabel lblNewLabel_5 = new JLabel("Module Teahcers");
+		lblNewLabel_5.setBounds(6, 26, 118, 28);
+		teacherPannel.add(lblNewLabel_5);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(6, 119, 528, 342);
+		teacherPannel.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
 		settingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layeredPane.removeAll();
@@ -232,6 +262,61 @@ public class StudentDashboard extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				new Showpassword().showPassword(chckbxNewCheckBox, passwordField, newPasswordField, cPasswordfield);
 				}});
+		viewTeacherButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				layeredPane.removeAll();
+				layeredPane.add(teacherPannel);
+				layeredPane.repaint();
+				layeredPane.revalidate();
+				try
+				{
+					DatabaseConnector dc=new DatabaseConnector();
+					Connection con=dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
+					String query="SELECT ID,email,firstname,lastname FROM `users` WHERE role=?";
+					PreparedStatement pst=con.prepareStatement(query);
+					pst.setString(1, "teacher");
+					ResultSet rs=pst.executeQuery();
+					ResultSetMetaData rsmd=(ResultSetMetaData) rs.getMetaData();
+					DefaultTableModel model=(DefaultTableModel) table.getModel();
+					 model.setRowCount(0); // Clear the table model
+					int column=rsmd.getColumnCount();
+					String[] columnName= new String[column];
+					System.out.println(column);
+					for(int i=0;i<column;i++)
+					{
+						columnName[i]=rsmd.getColumnName(i+1);
+						
+					}
+					model.setColumnIdentifiers(columnName);
+					String firstname,lastname,email,id;
+					
+					List<String> myList = new ArrayList<>();
+					
+					while(rs.next())
+					{
+						id=rs.getString(1);
+						email=rs.getString(2);
+						firstname=rs.getString(3);
+						lastname=rs.getString(4);	
+						myList = new ArrayList<>();
+						myList.add(id);
+						myList.add(email);
+						myList.add(firstname);
+						myList.add(lastname);
+						Vector<String> row = new Vector<String>(myList);
+						model.addRow(row);
+					}
+					pst.close();
+					con.close();
+					
+				}
+				catch(Exception ex)
+				{
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+				}
+				
+			}
+		});
 			}
 	}
 
