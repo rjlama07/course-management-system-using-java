@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.SwingConstants;
 
 import Functions.Greet;
+import Models.Usermodel;
 
 import java.awt.Color;
 import javax.swing.ImageIcon;
@@ -24,8 +25,9 @@ public class StudentDashboard extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public StudentDashboard(JFrame frame,String name) {
-		name=name.substring(0, 1).toUpperCase()+name.substring(1);
+	public StudentDashboard(JFrame frame,Usermodel user) {
+		String name=user.getFirstName();
+		 name=name.substring(0, 1).toUpperCase()+name.substring(1);
 		setLayout(null);
 		frame.setBounds(100, 100, 808, 480);
 		JPanel mainPanel = new JPanel();

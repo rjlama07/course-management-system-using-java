@@ -22,6 +22,7 @@ import Validator.Valid;
 public class Auth {
 	DatabaseConnector dc=new DatabaseConnector();
     public void login(String username,String password, JPanel mainPanel,JFrame frame){
+    	Usermodel user=new Usermodel();
         DatabaseConnector dc=new DatabaseConnector();
         if(username.isEmpty() && password.isEmpty())
 				{
@@ -32,29 +33,32 @@ public class Auth {
 					try {
 					
 						Connection con=dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
-						String query="SELECT role,firstname FROM `users` WHERE username=? and password=?";
+						String query="SELECT * FROM `users` WHERE username=? and password=?";
 						PreparedStatement pst=con.prepareStatement(query);
 						pst.setString(1, username);
 						pst.setString(2,password);
 						ResultSet rs=pst.executeQuery();
 						if(rs.next())
 						{
+							user.setRole(rs.getString("role"));
+							user.setFirstName(rs.getString("firstname"));
+							user.setPassword(rs.getString("password"));
+							user.setEmail(rs.getString("username"));
+							user.setLastName(rs.getString("lastname"));
 							
-							String role=rs.getString("role");
-							String name=rs.getString("firstname");
-							if(role.equals("student"))
+							if(user.getRole().equals("student"))
 							{
 								mainPanel.setVisible(false);
-								new StudentDashboard(frame,name);
+								new StudentDashboard(frame,user);
 								JOptionPane.showMessageDialog(null, "Login in as Student");
 								 
 							}
-							else if(role.equals("teacher"))
+							else if(user.getRole().equals("teacher"))
 							{
 								JOptionPane.showMessageDialog(null, "Login in as Teacher");
 								frame.setVisible(false);	
 							}
-							else if(role.equals("admin"))
+							else if(user.getRole().equals("admin"))
 							{
 								JOptionPane.showMessageDialog(null, "Welcome admin");
 							}
