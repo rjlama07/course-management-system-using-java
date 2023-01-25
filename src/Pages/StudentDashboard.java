@@ -51,6 +51,7 @@ public class StudentDashboard extends JPanel {
 		panel.add(lblNewLabel);
 		
 		JButton dashboardButton = new JButton("Dashboard");
+		dashboardButton.setBorderPainted(false);
 		dashboardButton.setBounds(31, 168, 207, 29);
 		panel.add(dashboardButton);
 		
@@ -75,7 +76,7 @@ public class StudentDashboard extends JPanel {
 		JPanel settingPannel = new JPanel();
 		layeredPane.add(settingPannel, "name_76750832556583");
 		settingPannel.setLayout(null);
-		
+		settingButton.setBorderPainted(false);
 		JLabel lblNewLabel_2 = new JLabel("Settings");
 		lblNewLabel_2.setBounds(21, 20, 106, 26);
 		settingPannel.add(lblNewLabel_2);
