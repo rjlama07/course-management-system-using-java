@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Auth.Auth;
+import Connector.DatabaseConnector;
 import Controller.Showpassword;
 
 import javax.swing.JCheckBox;
@@ -28,7 +29,8 @@ public class LoginPage extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public LoginPage(final JFrame frame) {
+	public LoginPage(final JFrame frame,DatabaseConnector dc) {
+		final Auth auth=new Auth(dc);
 		setLayout(null);
 		final JPanel mainPanel = new JPanel();
 		frame.setBounds(100, 100, 668, 406);
@@ -104,7 +106,7 @@ public class LoginPage extends JPanel {
 		
 		mainPanel.add(chckbxNewCheckBox);
 		passwordField.setEchoChar('*');
-		final Auth auth=new Auth();
+		
 		chckbxNewCheckBox.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) {
@@ -122,7 +124,7 @@ public class LoginPage extends JPanel {
 		});
 		textbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new SignupPannel(frame);
+				new SignupPannel(frame,dc);
 				mainPanel.setVisible(false);
 			}
 		});

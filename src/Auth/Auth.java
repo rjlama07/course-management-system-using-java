@@ -1,6 +1,6 @@
 package Auth;
 
-import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JFrame;
@@ -20,10 +20,13 @@ import Validator.Valid;
 
 
 public class Auth {
-	DatabaseConnector dc=new DatabaseConnector();
+	DatabaseConnector dc;
+	public Auth(DatabaseConnector dc){
+		this.dc=dc;
+	}
+	
     public void login(String username,String password, JPanel mainPanel,JFrame frame){
     	Usermodel user=new Usermodel();
-        DatabaseConnector dc=new DatabaseConnector();
         if(username.isEmpty() && password.isEmpty())
 				{
 					JOptionPane.showMessageDialog(null, "Please input usename or password");
@@ -31,10 +34,9 @@ public class Auth {
 				}
 				else{
 					try {
-					
-						Connection con=dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
+						
 						String query="SELECT * FROM `users` WHERE email=? and password=?";
-						PreparedStatement pst=con.prepareStatement(query);
+						PreparedStatement pst=dc.pst(query);
 						pst.setString(1, username);
 						pst.setString(2,password);
 						ResultSet rs=pst.executeQuery();
@@ -49,7 +51,7 @@ public class Auth {
 							if(user.getRole().equals("student"))
 							{
 								mainPanel.setVisible(false);
-								new StudentDashboard(frame,user);
+								new StudentDashboard(frame,user,dc);
 								JOptionPane.showMessageDialog(null, "Login in as Student");
 								 
 							}
@@ -91,17 +93,16 @@ public class Auth {
 				else if (validator.checkPassword(user.getPassword()) && user.getPassword().equals(user.getCpassword())) {
 					try {
 						String query = "INSERT INTO `users`(`email`, `password`, `role`,`firstname`,`lastname`) VALUES (?,?,?,?,?)";
-						Connection con = dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
 						String query1 = "SELECT role FROM `users` WHERE email=?";
-						PreparedStatement pst1;
-						pst1 = con.prepareStatement(query1);
+						PreparedStatement pst1=dc.pst(query1);
+				
 						pst1.setString(1, user.getEmail());
 						ResultSet rs = pst1.executeQuery();
 						if (rs.next()) {
 							throw new UserAlreadyExist("User Already Exist");
 						} else {
 							PreparedStatement pst;
-							pst = con.prepareStatement(query);
+							pst = dc.pst(query);
 							pst.setString(1, user.getEmail());
 							pst.setString(2, user.getPassword());
 							pst.setString(3, user.getRole());
@@ -109,10 +110,10 @@ public class Auth {
 							pst.setString(5, user.getLastName());
 							pst.executeUpdate();
 							JOptionPane.showMessageDialog(null, "You are registered.Login to continue");
-							new LoginPage(frame);
+							new LoginPage(frame,dc);
 							panel.setVisible(false);
 						}
-						con.close();
+						
 					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(null, ex.getMessage());
 

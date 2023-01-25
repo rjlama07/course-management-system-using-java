@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 
 import javax.swing.JPanel;
 
+import Connector.DatabaseConnector;
 import Pages.SplashScreen;
 
 import java.awt.BorderLayout;
@@ -48,7 +49,10 @@ public class MainApp {
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
-		new SplashScreen(frame);
+		DatabaseConnector dc=new DatabaseConnector();
+		new SplashScreen(frame,dc);
+		
+		
 
 	}
 

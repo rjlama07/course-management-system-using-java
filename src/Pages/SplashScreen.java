@@ -12,6 +12,9 @@ import javax.swing.JLabel;
 
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
+
+import Connector.DatabaseConnector;
+
 import javax.swing.SwingConstants;
 
 public class SplashScreen extends JPanel {
@@ -25,7 +28,7 @@ public class SplashScreen extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public SplashScreen(final JFrame frame) {
+	public SplashScreen(final JFrame frame,DatabaseConnector dc) {
 		final JPanel panel = new JPanel();
 		panel.setBackground(new Color(243, 242, 241));
 		panel.setLayout(null);
@@ -48,7 +51,7 @@ public class SplashScreen extends JPanel {
 				progressBar.setValue((int) ((i / (float) progressBar.getMaximum()) * 100));
 				if (i == 100) {
 					timer.stop();
-					new LoginPage(frame);
+					new LoginPage(frame,dc);
 					panel.setVisible(false);
 				}
 			}

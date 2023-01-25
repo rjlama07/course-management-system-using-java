@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import Auth.Auth;
+import Connector.DatabaseConnector;
 import Controller.Showpassword;
 import Models.Usermodel;
 
@@ -32,7 +33,7 @@ public class SignupPannel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public SignupPannel(final JFrame frame) {
+	public SignupPannel(final JFrame frame,DatabaseConnector dc) {
 		setLayout(null);
 
 		final JPanel panel = new JPanel();
@@ -106,14 +107,14 @@ public class SignupPannel extends JPanel {
 		textbutton.setForeground(new Color(10, 1, 255));
 		textbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new LoginPage(frame);
+				new LoginPage(frame,dc);
 				panel.setVisible(false);
 			}
 		});
 		textbutton.setBorderPainted(false);
 		textbutton.setBounds(112, 362, 91, 29);
 		panel.add(textbutton);
-        final Auth auth=new Auth();
+        final Auth auth=new Auth(dc);
 		JButton button = new JButton("Submit");
 		button.setBounds(25, 326, 163, 33);
 		button.setOpaque(true);
