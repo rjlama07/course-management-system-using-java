@@ -11,6 +11,7 @@ import Exceptions.InvalidEmail;
 import Exceptions.PasswordDonotMatch;
 import Exceptions.UserAlreadyExist;
 import Exceptions.UserNotFound;
+import Models.Usermodel;
 import Pages.LoginPage;
 import Pages.StudentDashboard;
 import Validator.Valid;
@@ -75,33 +76,33 @@ public class Auth {
     }
 
 
-	public void Signup(String name,String password,String cPassword,String firstName,String lastName,JFrame frame,String username,JPanel panel){
+	public void Signup(Usermodel user,JFrame frame,JPanel panel){
 		Valid validator=new Valid();
 		try{
-			if (!validator.checkEmail(username))
+			if (!validator.checkEmail(user.getEmail()))
 				{
 					throw new InvalidEmail("Invalid Email! enter valid email");
 
 				}
-				else if (validator.checkPassword(password) && password.equals(cPassword)) {
+				else if (validator.checkPassword(user.getPassword()) && user.getPassword().equals(user.getCpassword())) {
 					try {
 						String query = "INSERT INTO `users`(`username`, `password`, `role`,`firstname`,`lastname`) VALUES (?,?,?,?,?)";
 						Connection con = dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
 						String query1 = "SELECT role FROM `users` WHERE username=?";
 						PreparedStatement pst1;
 						pst1 = con.prepareStatement(query1);
-						pst1.setString(1, username);
+						pst1.setString(1, user.getEmail());
 						ResultSet rs = pst1.executeQuery();
 						if (rs.next()) {
 							throw new UserAlreadyExist("User Already Exist");
 						} else {
 							PreparedStatement pst;
 							pst = con.prepareStatement(query);
-							pst.setString(1, username);
-							pst.setString(2, password);
-							pst.setString(3, "student");
-							pst.setString(4, firstName);
-							pst.setString(5, lastName);
+							pst.setString(1, user.getEmail());
+							pst.setString(2, user.getPassword());
+							pst.setString(3, user.getRole());
+							pst.setString(4, user.getFirstName());
+							pst.setString(5, user.getLastName());
 							pst.executeUpdate();
 							JOptionPane.showMessageDialog(null, "You are registered.Login to continue");
 							new LoginPage(frame);
@@ -112,9 +113,9 @@ public class Auth {
 						JOptionPane.showMessageDialog(null, ex.getMessage());
 
 					}
-				} else if (!validator.checkPassword(password)) {
+				} else if (!validator.checkPassword(user.getPassword())) {
 					 throw new PasswordDonotMatch("Password must have one special character,uppercase, lowercase and must be atleast 8 characters ");
-				} else if (!password.equals(cPassword)) {
+				} else if (!user.getPassword().equals(user.getCpassword())) {
 					throw new PasswordDonotMatch("Password do not match");
 				}
 		}

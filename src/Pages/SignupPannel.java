@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import Auth.Auth;
+import Models.Usermodel;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -123,7 +125,14 @@ public class SignupPannel extends JPanel {
 				String username = textField_1.getText().toLowerCase();
 				String cPassword = new String(passwordField_1.getPassword());
 				String password = new String(passwordField.getPassword());
-				auth.Signup(username, password, cPassword, firstName, lastName, frame, username, panel);
+				Usermodel user=new Usermodel();
+				user.setEmail(username);
+				user.setFirstName(firstName);
+				user.setLastName(lastName);
+				user.setRole("student");
+				user.setCpassword(cPassword);
+				user.setPassword(password);
+				auth.Signup(user, frame, panel);
 			}
 		});
 		panel.add(button);
