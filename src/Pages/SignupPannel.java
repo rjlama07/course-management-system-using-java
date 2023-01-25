@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import Auth.Auth;
+import Controller.Showpassword;
 import Models.Usermodel;
 
 import java.awt.Color;
@@ -17,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPasswordField;
+import javax.swing.JCheckBox;
 
 public class SignupPannel extends JPanel {
 
@@ -35,6 +37,7 @@ public class SignupPannel extends JPanel {
 
 		final JPanel panel = new JPanel();
 		panel.setBounds(6, 6, 654, 410);
+		frame.setBounds(100, 100, 668, 412);
 		add(panel);
 		panel.setLayout(null);
 		frame.getContentPane().add(panel);
@@ -95,7 +98,7 @@ public class SignupPannel extends JPanel {
 		passwordField_1.setBounds(22, 260, 275, 34);
 		panel.add(passwordField_1);
 		JLabel lblNewLabel_3 = new JLabel("Already  member?");
-		lblNewLabel_3.setBounds(25, 351, 121, 16);
+		lblNewLabel_3.setBounds(25, 367, 121, 16);
 		panel.add(lblNewLabel_3);
 
 		JButton textbutton = new JButton("Login");
@@ -108,11 +111,11 @@ public class SignupPannel extends JPanel {
 			}
 		});
 		textbutton.setBorderPainted(false);
-		textbutton.setBounds(121, 346, 91, 29);
+		textbutton.setBounds(112, 362, 91, 29);
 		panel.add(textbutton);
         final Auth auth=new Auth();
 		JButton button = new JButton("Submit");
-		button.setBounds(25, 306, 163, 33);
+		button.setBounds(25, 326, 163, 33);
 		button.setOpaque(true);
 		button.setBorderPainted(false);
 		button.setForeground(new Color(3, 248, 217));
@@ -136,6 +139,18 @@ public class SignupPannel extends JPanel {
 			}
 		});
 		panel.add(button);
+		passwordField.setEchoChar('*');
+		passwordField_1.setEchoChar('*');
+		JCheckBox chckbxNewCheckBox = new JCheckBox("show password");
+		chckbxNewCheckBox.setFont(new Font("Lucida Grande", Font.ITALIC, 9));
+		chckbxNewCheckBox.setBounds(25, 291, 128, 23);
+		chckbxNewCheckBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Showpassword().showPassword(chckbxNewCheckBox, passwordField,passwordField_1);
+			}
+		});
+			
+		panel.add(chckbxNewCheckBox);
 
 	}
 }

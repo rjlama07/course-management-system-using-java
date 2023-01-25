@@ -12,9 +12,9 @@ import java.sql.PreparedStatement;
 import javax.swing.SwingConstants;
 
 import Connector.DatabaseConnector;
-
+import Controller.Greet;
+import Controller.Showpassword;
 import Exceptions.PasswordDonotMatch;
-import Functions.Greet;
 import Models.Usermodel;
 import Validator.Valid;
 
@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import java.awt.CardLayout;
 import javax.swing.JPasswordField;
 import java.awt.Font;
+import javax.swing.JCheckBox;
 
 public class StudentDashboard extends JPanel {
 
@@ -142,9 +143,17 @@ public class StudentDashboard extends JPanel {
 		settingPannel.add(lblNewLabel_4_2);
 		
 		JButton btnNewButton = new JButton("Change Password");
+		btnNewButton.setForeground(new Color(255, 38, 0));
+		btnNewButton.setBackground(new Color(255, 38, 0));
 		btnNewButton.setFont(new Font("Lucida Grande", Font.ITALIC, 9));
-		btnNewButton.setBounds(64, 273, 138, 29);
+		btnNewButton.setBounds(64, 285, 138, 29);
 		settingPannel.add(btnNewButton);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("show password");
+		chckbxNewCheckBox.setFont(new Font("Lucida Grande", Font.ITALIC, 9));
+		chckbxNewCheckBox.setBounds(26, 261, 128, 23);
+		
+		settingPannel.add(chckbxNewCheckBox);
 		settingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layeredPane.removeAll();
@@ -161,13 +170,19 @@ public class StudentDashboard extends JPanel {
 				layeredPane.revalidate();
 			}
 		});
+		
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			
+		     
+			public void actionPerformed(ActionEvent e) {	
 				String oldPassword=new String(passwordField.getPassword());
 				String newPassword=new String(newPasswordField.getPassword());
 				String cPassword=new String(cPasswordfield.getPassword());
-				
 				try {
+					 System.out.println(user.getPassword());
+					 System.out.println(oldPassword+"old"); 
+					 System.out.println(newPassword+"nee"); 
+					 
 					if(oldPassword.equals(user.getPassword()))
 					{
 						Valid valid=new Valid();
@@ -208,6 +223,10 @@ public class StudentDashboard extends JPanel {
 				
 				}
 		});
+		chckbxNewCheckBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Showpassword().showPassword(chckbxNewCheckBox, passwordField, newPasswordField, cPasswordfield);
+				}});
 			}
 	}
 

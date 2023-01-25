@@ -15,6 +15,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Auth.Auth;
+import Controller.Showpassword;
+
+import javax.swing.JCheckBox;
 
 public class LoginPage extends JPanel {
 	private JPasswordField passwordField;
@@ -32,7 +35,7 @@ public class LoginPage extends JPanel {
 		mainPanel.setBackground(SystemColor.window);
 		mainPanel.setLayout(null);
 		JButton button = new JButton("Login");
-		button.setBounds(273, 261, 278, 44);
+		button.setBounds(273, 272, 278, 44);
 		
 		button.setOpaque(true);
 		button.setBorderPainted(false);
@@ -63,7 +66,7 @@ public class LoginPage extends JPanel {
 		mainPanel.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Not a member?");
-		lblNewLabel_3.setBounds(311, 317, 94, 16);
+		lblNewLabel_3.setBounds(312, 325, 94, 16);
 		mainPanel.add(lblNewLabel_3);
 
 		JButton textbutton = new JButton("Sign up");
@@ -74,7 +77,7 @@ public class LoginPage extends JPanel {
 			}
 		});
 		textbutton.setBorderPainted(false);
-		textbutton.setBounds(391, 312, 91, 29);
+		textbutton.setBounds(391, 320, 91, 29);
 		mainPanel.add(textbutton);
 		mainPanel.setBounds(100, 100, 711, 380);
 
@@ -94,7 +97,21 @@ public class LoginPage extends JPanel {
 		lblNewLabel_1.setIcon(new ImageIcon(LoginPage.class.getResource("/images/logo_good.png")));
 		lblNewLabel_1.setBounds(6, 136, 223, 112);
 		panel.add(lblNewLabel_1);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("show password");
+		chckbxNewCheckBox.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		chckbxNewCheckBox.setBounds(443, 247, 128, 23);
+		
+		mainPanel.add(chckbxNewCheckBox);
+		passwordField.setEchoChar('*');
 		final Auth auth=new Auth();
+		chckbxNewCheckBox.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) {
+				new Showpassword().showPassword(chckbxNewCheckBox, passwordField);
+				
+			}
+		});
 
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
