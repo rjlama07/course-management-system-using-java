@@ -6,21 +6,34 @@ import javax.swing.JLabel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import javax.swing.SwingConstants;
 
+import Connector.DatabaseConnector;
+
+import Exceptions.PasswordDonotMatch;
 import Functions.Greet;
 import Models.Usermodel;
+import Validator.Valid;
 
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+
 import java.awt.CardLayout;
+import javax.swing.JPasswordField;
+import java.awt.Font;
 
 public class StudentDashboard extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private JPasswordField passwordField;
+	private JPasswordField newPasswordField;
+	private JPasswordField cPasswordfield;
 
 	/**
 	 * Create the panel.
@@ -38,10 +51,11 @@ public class StudentDashboard extends JPanel {
 		frame.getContentPane().add(mainPanel);
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(116, 192, 67));
-		panel.setBounds(0, 0, 268, 480);
+		panel.setBounds(0, 0, 269, 480);
 		mainPanel.add(panel);
 		panel.setLayout(null);
 		JLabel wName = new JLabel();
+		wName.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		Greet greet=new Greet();
 		wName.setText(greet.greetUser(name));
 		wName.setBounds(108, 20, 173, 32);
@@ -79,9 +93,58 @@ public class StudentDashboard extends JPanel {
 		layeredPane.add(settingPannel, "name_76750832556583");
 		settingPannel.setLayout(null);
 		settingButton.setBorderPainted(false);
+		
+		JButton logoutButton = new JButton("Log Out");
+		logoutButton.setForeground(new Color(255, 38, 0));
+		logoutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new LoginPage(frame);
+				mainPanel.setVisible(false);
+				JOptionPane.showMessageDialog(null, "Log out sucessfully");
+			}
+		});
+		logoutButton.setBorderPainted(false);
+		logoutButton.setBounds(31, 394, 207, 29);
+		panel.add(logoutButton);
 		JLabel lblNewLabel_2 = new JLabel("Settings");
 		lblNewLabel_2.setBounds(21, 20, 106, 26);
 		settingPannel.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("Change Password");
+		lblNewLabel_3.setBounds(21, 93, 129, 16);
+		settingPannel.add(lblNewLabel_3);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(26, 137, 173, 33);
+		settingPannel.add(passwordField);
+		
+		newPasswordField = new JPasswordField();
+		newPasswordField.setBounds(26, 185, 173, 33);
+		settingPannel.add(newPasswordField);
+		
+		cPasswordfield = new JPasswordField();
+		cPasswordfield.setBounds(26, 230, 173, 33);
+		settingPannel.add(cPasswordfield);
+		
+		JLabel lblNewLabel_4 = new JLabel("old password");
+		lblNewLabel_4.setFont(new Font("Lao MN", Font.PLAIN, 11));
+		lblNewLabel_4.setBounds(31, 125, 96, 16);
+		settingPannel.add(lblNewLabel_4);
+		
+		JLabel lblNewLabel_4_1 = new JLabel("new password");
+		lblNewLabel_4_1.setFont(new Font("Lao MN", Font.PLAIN, 11));
+		lblNewLabel_4_1.setBounds(31, 173, 96, 16);
+		settingPannel.add(lblNewLabel_4_1);
+		
+		JLabel lblNewLabel_4_2 = new JLabel("confirm password");
+		lblNewLabel_4_2.setFont(new Font("Lao MN", Font.PLAIN, 11));
+		lblNewLabel_4_2.setBounds(31, 218, 96, 16);
+		settingPannel.add(lblNewLabel_4_2);
+		
+		JButton btnNewButton = new JButton("Change Password");
+		btnNewButton.setFont(new Font("Lucida Grande", Font.ITALIC, 9));
+		btnNewButton.setBounds(64, 273, 138, 29);
+		settingPannel.add(btnNewButton);
 		settingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layeredPane.removeAll();
@@ -98,6 +161,54 @@ public class StudentDashboard extends JPanel {
 				layeredPane.revalidate();
 			}
 		});
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String oldPassword=new String(passwordField.getPassword());
+				String newPassword=new String(newPasswordField.getPassword());
+				String cPassword=new String(cPasswordfield.getPassword());
+				
+				try {
+					if(oldPassword.equals(user.getPassword()))
+					{
+						Valid valid=new Valid();
+						if(valid.checkPassword(newPassword))
+						{
+							if(newPassword.equals(cPassword))
+							{
+								DatabaseConnector dc=new DatabaseConnector();
+								Connection con=dc.connection("jdbc:mysql://localhost:3306/coursemanagementsystem");
+								String query="UPDATE users SET password=? WHERE username=?";
+								PreparedStatement pst=con.prepareStatement(query);
+								pst.setString(1, newPassword);
+								pst.setString(2,user.getEmail());
+								pst.execute();
+								JOptionPane.showMessageDialog(null, "Password changed sucessfully");
+								passwordField.setText("");
+								newPasswordField.setText("");
+								cPasswordfield.setText("");
+							}
+							else
+							{
+								throw new PasswordDonotMatch("Please match the new and confirm password");
+							}
+						}
+						else
+						{
+							throw new PasswordDonotMatch("Password must be valid i.e one uppercase,lowercase,special character and must be atleast 8 character");
+						}
+					}
+					else {
+						throw new PasswordDonotMatch("Yout old password donot match");
+					}
+				}
+				catch (Exception ex)
+				{
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+				}
+				
+				}
+		});
+			}
 	}
-}
+
 

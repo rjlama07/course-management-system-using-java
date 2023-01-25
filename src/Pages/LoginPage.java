@@ -28,10 +28,12 @@ public class LoginPage extends JPanel {
 	public LoginPage(final JFrame frame) {
 		setLayout(null);
 		final JPanel mainPanel = new JPanel();
+		frame.setBounds(100, 100, 668, 406);
 		mainPanel.setBackground(SystemColor.window);
 		mainPanel.setLayout(null);
 		JButton button = new JButton("Login");
 		button.setBounds(273, 261, 278, 44);
+		
 		button.setOpaque(true);
 		button.setBorderPainted(false);
 		button.setForeground(new Color(3, 248, 217));
