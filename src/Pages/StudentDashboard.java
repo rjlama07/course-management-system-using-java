@@ -99,9 +99,14 @@ public class StudentDashboard extends JPanel {
 		logoutButton.setForeground(new Color(255, 38, 0));
 		logoutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new LoginPage(frame);
-				mainPanel.setVisible(false);
-				JOptionPane.showMessageDialog(null, "Log out sucessfully");
+				int a=JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?","Select",JOptionPane.YES_NO_OPTION);
+				if(a==0 )
+				{
+					new LoginPage(frame);
+					mainPanel.setVisible(false);
+					
+				}
+
 			}
 		});
 		logoutButton.setBorderPainted(false);
