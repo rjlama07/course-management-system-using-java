@@ -62,6 +62,8 @@ public class Auth {
 							}
 							else if(user.getRole().equals("admin"))
 							{
+								mainPanel.setVisible(false);
+								new StudentDashboard(frame,user,dc);
 								JOptionPane.showMessageDialog(null, "Welcome admin");
 							}
 							else 

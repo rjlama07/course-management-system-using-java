@@ -28,9 +28,13 @@ public class Greet {
         {
           return "Good Morning";
         }
-        else if(time>=12 && time<19)
+        else if(time>=12 && time<17)
         {
             return "Good Afternoon";
+        }
+        else if(time>=17 && time<=19)
+        {
+        	return "Good Evening";
         }
         else {
             return "Hello";
@@ -40,6 +44,7 @@ public class Greet {
     {
         Greet datetime=new Greet();
         int time=Integer.parseInt(datetime.getDate("time"));
+        System.out.println(time);
         String greet= datetime.day(time);
         return greet+" "+name;
     }

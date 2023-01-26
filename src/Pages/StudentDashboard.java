@@ -35,6 +35,7 @@ import javax.swing.JPasswordField;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 
 public class StudentDashboard extends JPanel {
@@ -100,10 +101,6 @@ public class StudentDashboard extends JPanel {
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setBounds(166, 5, 177, 43);
 		dashboardPannel.add(lblNewLabel_1);
-
-		JPanel settingPannel = new JPanel();
-		layeredPane.add(settingPannel, "name_76750832556583");
-		settingPannel.setLayout(null);
 		settingButton.setBorderPainted(false);
 
 		JButton logoutButton = new JButton("Log Out");
@@ -128,12 +125,31 @@ public class StudentDashboard extends JPanel {
 		viewTeacherButton.setBorderPainted(false);
 		viewTeacherButton.setBounds(31, 209, 207, 29);
 		panel.add(viewTeacherButton);
-		
+
 		JButton viewCourseButton = new JButton("View Course");
-		
+
 		viewCourseButton.setBorderPainted(false);
 		viewCourseButton.setBounds(31, 250, 207, 29);
 		panel.add(viewCourseButton);
+
+		JPanel teacherPannel = new JPanel();
+		layeredPane.add(teacherPannel, "name_100663201273375");
+		teacherPannel.setLayout(null);
+
+		JLabel lblNewLabel_5 = new JLabel("Module Teahcers");
+		lblNewLabel_5.setBounds(6, 26, 118, 28);
+		teacherPannel.add(lblNewLabel_5);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(6, 119, 528, 342);
+		teacherPannel.add(scrollPane);
+
+		table = new JTable();
+		scrollPane.setViewportView(table);
+
+		JPanel settingPannel = new JPanel();
+		layeredPane.add(settingPannel, "name_115464846705750");
+		settingPannel.setLayout(null);
 		JLabel lblNewLabel_2 = new JLabel("Settings");
 		lblNewLabel_2.setBounds(21, 20, 106, 26);
 		settingPannel.add(lblNewLabel_2);
@@ -182,51 +198,40 @@ public class StudentDashboard extends JPanel {
 
 		settingPannel.add(chckbxNewCheckBox);
 
-		JPanel teacherPannel = new JPanel();
-		layeredPane.add(teacherPannel, "name_100663201273375");
-		teacherPannel.setLayout(null);
-
-		JLabel lblNewLabel_5 = new JLabel("Module Teahcers");
-		lblNewLabel_5.setBounds(6, 26, 118, 28);
-		teacherPannel.add(lblNewLabel_5);
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 119, 528, 342);
-		teacherPannel.add(scrollPane);
-
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		
 		JPanel viewCoursePannel = new JPanel();
-		layeredPane.add(viewCoursePannel, "name_112593222370042");
+		layeredPane.add(viewCoursePannel, "name_115470404469625");
 		viewCoursePannel.setLayout(null);
-		
+
 		JLabel lblNewLabel_6 = new JLabel("Cources Available");
 		lblNewLabel_6.setBounds(25, 35, 126, 30);
 		viewCoursePannel.add(lblNewLabel_6);
-		
+
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(25, 114, 498, 360);
 		viewCoursePannel.add(scrollPane_1);
-		
+
 		table_course = new JTable();
 		scrollPane_1.setViewportView(table_course);
-		settingButton.addActionListener(new ActionListener() {
+		
+		JButton btnNewButton_1 = new JButton("Edit");
+		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layeredPane.removeAll();
-				layeredPane.add(settingPannel);
-				layeredPane.repaint();
-				layeredPane.revalidate();
 			}
 		});
-		dashboardButton.addActionListener(new ActionListener() {
+		btnNewButton_1.setBounds(147, 77, 117, 29);
+		viewCoursePannel.add(btnNewButton_1);
+		
+		JButton btnNewButton_1_1 = new JButton("Add");
+		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layeredPane.removeAll();
-				layeredPane.add(dashboardPannel);
-				layeredPane.repaint();
-				layeredPane.revalidate();
 			}
 		});
+		btnNewButton_1_1.setBounds(25, 77, 117, 29);
+		
+		
+		JButton btnNewButton_1_2 = new JButton("Delete");
+		btnNewButton_1_2.setBounds(269, 77, 117, 29);
+		viewCoursePannel.add(btnNewButton_1_2);
 
 		btnNewButton.addActionListener(new ActionListener() {
 
@@ -236,14 +241,13 @@ public class StudentDashboard extends JPanel {
 				String cPassword = new String(cPasswordfield.getPassword());
 				try {
 					System.out.println(user.getPassword());
-					System.out.println(oldPassword + "old");
-					System.out.println(newPassword + "nee");
+					
 
 					if (oldPassword.equals(user.getPassword())) {
 						Valid valid = new Valid();
 						if (valid.checkPassword(newPassword)) {
 							if (newPassword.equals(cPassword)) {
-								String query = "UPDATE users SET password=? WHERE username=?";
+								String query = "UPDATE users SET password=? WHERE email=?";
 								PreparedStatement pst = dc.pst(query);
 								pst.setString(1, newPassword);
 								pst.setString(2, user.getEmail());
@@ -273,6 +277,25 @@ public class StudentDashboard extends JPanel {
 				new Showpassword().showPassword(chckbxNewCheckBox, passwordField, newPasswordField, cPasswordfield);
 			}
 		});
+
+		JButton addTeacherButton = new JButton("Add");
+		addTeacherButton.setBounds(6, 66, 117, 29);
+		settingButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				layeredPane.removeAll();
+				layeredPane.add(settingPannel);
+				layeredPane.repaint();
+				layeredPane.revalidate();
+			}
+		});
+		dashboardButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				layeredPane.removeAll();
+				layeredPane.add(dashboardPannel);
+				layeredPane.repaint();
+				layeredPane.revalidate();
+			}
+		});
 		viewTeacherButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layeredPane.removeAll();
@@ -289,7 +312,7 @@ public class StudentDashboard extends JPanel {
 					model.setRowCount(0); // Clear the table model
 					int column = rsmd.getColumnCount();
 					String[] columnName = new String[column];
-					
+
 					for (int i = 0; i < column; i++) {
 						columnName[i] = rsmd.getColumnName(i + 1);
 
@@ -363,8 +386,156 @@ public class StudentDashboard extends JPanel {
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage());
 				}
+
+			}
+		});
+		
+		
+		JButton btnEdit = new JButton("Edit");
+		btnEdit.setBounds(131, 66, 117, 29);
+		
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setBounds(249, 66, 117, 29);
+		
+		
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String a=JOptionPane.showInputDialog(null,"Enter ID you want to delete");
+				int id =Integer.parseInt(a);
+				
+				String query="DELETE FROM users WHERE id = ?";
+				try {
+					PreparedStatement pst=dc.pst(query);
+					pst.setInt(1, id);
+					pst.execute();
+					JOptionPane.showMessageDialog(null, "Sucessfully deleted. Refresh to see changes");
+				}
+				catch(Exception ex)
+				{
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+					
+				}
 				
 			}
 		});
+		addTeacherButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JTextField firstname=new JTextField();
+					JTextField lastname=new JTextField();
+					JTextField password=new JTextField();
+					JTextField email=new JTextField();
+					String role="teacher";
+					Object[] fields= {
+							"firstname",firstname,
+							"lastname",lastname,
+							"Email",email,
+							"Set Password",password
+					};
+					int result=JOptionPane.showConfirmDialog(null,fields,"Add teacher",JOptionPane.OK_CANCEL_OPTION);
+					if(result == JOptionPane.OK_OPTION)
+					{
+						
+						String query="INSERT INTO `users` (`ID`, `email`, `password`, `role`, `firstname`, `lastname`) VALUES (NULL, ?, ?, ?, ?, ?)";
+						PreparedStatement pst=dc.pst(query);
+						pst.setString(1, email.getText());
+						pst.setString(2, password.getText());
+						pst.setString(3, role);
+						pst.setString(4, firstname.getText());
+						pst.setString(5, lastname.getText());	
+						pst.execute();
+						JOptionPane.showMessageDialog(null, "Sucessfully added teacher. Refresh to see changes");
+					}
+					
+					
+					
+				}
+				catch(Exception ex)
+				{
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+					
+				}
+			}
+		});
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JTextField firstname=new JTextField();
+					JTextField lastname=new JTextField();
+					JTextField id=new JTextField();
+					Object[] fields= {
+							"ID",id,
+							"firstname",firstname,
+							"lastname",lastname,
+							
+					};
+					int result=JOptionPane.showConfirmDialog(null,fields,"Add teacher",JOptionPane.OK_CANCEL_OPTION);
+					if(result == JOptionPane.OK_OPTION)
+					{
+						
+						String query="UPDATE users SET firstname = ?, lastname = ? WHERE id = ?";
+						PreparedStatement pst=dc.pst(query);
+						pst.setString(1, firstname.getText());
+						pst.setString(2, lastname.getText());
+						pst.setString(3, id.getText());	
+						pst.execute();
+						JOptionPane.showMessageDialog(null, "Sucessfully edited teacher. Refresh to see changes");
+					}
+					
+					
+					
+				}
+				catch(Exception ex)
+				{
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+					
+				}
+			}
+		});
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JTextField courseName=new JTextField();
+					JTextField totalYear=new JTextField();
+					JTextField seats=new JTextField();
+					Object[] fields= {
+							"CourseName",courseName,
+							"Total Year",totalYear,
+							"Seats",seats,
+							
+					};
+					int result=JOptionPane.showConfirmDialog(null,fields,"Add teacher",JOptionPane.OK_CANCEL_OPTION);
+					if(result == JOptionPane.OK_OPTION)
+					{
+						
+						String query="INSERT INTO `cources` (`id`, `courseName`, `totalyear`, `seats`) VALUES (NULL, ?, ?, ?)";
+						PreparedStatement pst=dc.pst(query);
+						pst.setString(1, courseName.getText());
+						pst.setString(2, totalYear.getText());
+						pst.setString(3, seats.getText());	
+						pst.execute();
+						JOptionPane.showMessageDialog(null, "Sucessfully added course. Refresh to see changes");
+					}
+					
+					
+					
+				}
+				catch(Exception ex)
+				{
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+					
+				
+			}
+			}
+		});
+		
+		if (user.getRole().equals("admin")) {
+			System.out.println("Hi");
+			teacherPannel.add(addTeacherButton);
+			teacherPannel.add(btnEdit);
+			teacherPannel.add(btnDelete);
+			viewCoursePannel.add(btnNewButton_1_1);
+		}
 	}
 }
