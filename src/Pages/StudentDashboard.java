@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 import Connector.DatabaseConnector;
+import Controller.ChangeData;
 import Controller.Greet;
 import Controller.Showpassword;
 import Exceptions.PasswordDonotMatch;
@@ -46,6 +47,7 @@ public class StudentDashboard extends JPanel {
 	private JPasswordField cPasswordfield;
 	private JTable table;
 	private JTable table_course;
+	private JTable studentTable;
 
 	/**
 	 * Create the panel.
@@ -131,6 +133,11 @@ public class StudentDashboard extends JPanel {
 		viewCourseButton.setBorderPainted(false);
 		viewCourseButton.setBounds(31, 250, 207, 29);
 		panel.add(viewCourseButton);
+		
+		JButton viewStudentButton = new JButton("View Student");
+		viewStudentButton.setBorderPainted(false);
+		viewStudentButton.setBounds(31, 328, 207, 29);
+		panel.add(viewStudentButton);
 
 		JPanel teacherPannel = new JPanel();
 		layeredPane.add(teacherPannel, "name_100663201273375");
@@ -256,6 +263,31 @@ public class StudentDashboard extends JPanel {
 
 		table_course = new JTable();
 		scrollPane_1.setViewportView(table_course);
+		
+		JPanel viewStudentPanel = new JPanel();
+		layeredPane.add(viewStudentPanel, "name_140162294566916");
+		viewStudentPanel.setLayout(null);
+		
+		JLabel Students = new JLabel("Students");
+		Students.setFont(new Font("Dialog", Font.PLAIN, 16));
+		Students.setBounds(25, 49, 92, 16);
+		viewStudentPanel.add(Students);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(29, 149, 494, 290);
+		viewStudentPanel.add(scrollPane_2);
+		
+		studentTable = new JTable();
+		scrollPane_2.setViewportView(studentTable);
+		
+		JButton editStudentButton = new JButton("Edit");
+		editStudentButton.setBounds(35, 84, 117, 29);
+		
+		
+		JButton btnNewButton_1_1 = new JButton("Delete");
+		
+		btnNewButton_1_1.setBounds(153, 84, 117, 29);
+		
 
 		JButton editCourseButton = new JButton("Edit");
 		editCourseButton.setBounds(147, 77, 117, 29);
@@ -280,67 +312,23 @@ public class StudentDashboard extends JPanel {
 				layeredPane.revalidate();
 			}
 		});
+		ChangeData cd=new ChangeData(dc);
 		dashboardButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layeredPane.removeAll();
-				layeredPane.add(dashboardPannel);
-				layeredPane.repaint();
-				layeredPane.revalidate();
+				cd.changePanne(layeredPane, dashboardPannel);
 			}
 		});
+		
 		viewTeacherButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layeredPane.removeAll();
-				layeredPane.add(teacherPannel);
-				layeredPane.repaint();
-				layeredPane.revalidate();
-				try {
-					String query = "SELECT ID,email,firstname,lastname FROM `users` WHERE role=?";
-					PreparedStatement pst = dc.pst(query);
-					pst.setString(1, "teacher");
-					ResultSet rs = pst.executeQuery();
-					ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-					DefaultTableModel model = (DefaultTableModel) table.getModel();
-					model.setRowCount(0); // Clear the table model
-					int column = rsmd.getColumnCount();
-					String[] columnName = new String[column];
-
-					for (int i = 0; i < column; i++) {
-						columnName[i] = rsmd.getColumnName(i + 1);
-
-					}
-					model.setColumnIdentifiers(columnName);
-					String firstname, lastname, email, id;
-
-					List<String> myList = new ArrayList<>();
-
-					while (rs.next()) {
-						id = rs.getString(1);
-						email = rs.getString(2);
-						firstname = rs.getString(3);
-						lastname = rs.getString(4);
-						myList = new ArrayList<>();
-						myList.add(id);
-						myList.add(email);
-						myList.add(firstname);
-						myList.add(lastname);
-						Vector<String> row = new Vector<String>(myList);
-						model.addRow(row);
-					}
-					pst.close();
-
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
-				}
+				cd.changePanne(layeredPane, teacherPannel);
+				cd.viewData(table, "teacher");
 
 			}
 		});
 		viewCourseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layeredPane.removeAll();
-				layeredPane.add(viewCoursePannel);
-				layeredPane.repaint();
-				layeredPane.revalidate();
+				cd.changePanne(layeredPane, viewCoursePannel);
 				try {
 					String query = "SELECT * FROM `cources`";
 					PreparedStatement pst = dc.pst(query);
@@ -390,20 +378,7 @@ public class StudentDashboard extends JPanel {
 
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String a = JOptionPane.showInputDialog(null, "Enter ID you want to delete");
-				int id = Integer.parseInt(a);
-
-				String query = "DELETE FROM users WHERE id = ?";
-				try {
-					PreparedStatement pst = dc.pst(query);
-					pst.setInt(1, id);
-					pst.execute();
-					JOptionPane.showMessageDialog(null, "Sucessfully deleted. Refresh to see changes");
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
-
-				}
-
+				cd.deleteData();
 			}
 		});
 		addTeacherButton.addActionListener(new ActionListener() {
@@ -439,30 +414,7 @@ public class StudentDashboard extends JPanel {
 		});
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					JTextField firstname = new JTextField();
-					JTextField lastname = new JTextField();
-					JTextField id = new JTextField();
-					Object[] fields = { "ID", id, "firstname", firstname, "lastname", lastname,
-
-					};
-					int result = JOptionPane.showConfirmDialog(null, fields, "Add teacher",
-							JOptionPane.OK_CANCEL_OPTION);
-					if (result == JOptionPane.OK_OPTION) {
-
-						String query = "UPDATE users SET firstname = ?, lastname = ? WHERE id = ?";
-						PreparedStatement pst = dc.pst(query);
-						pst.setString(1, firstname.getText());
-						pst.setString(2, lastname.getText());
-						pst.setString(3, id.getText());
-						pst.execute();
-						JOptionPane.showMessageDialog(null, "Sucessfully edited teacher. Refresh to see changes");
-					}
-
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
-
-				}
+			cd.editData();
 			}
 		});
 		addCourseButton.addActionListener(new ActionListener() {
@@ -543,15 +495,32 @@ public class StudentDashboard extends JPanel {
 				}
 			}
 		});
-
+		editStudentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cd.editData();
+			}
+		});
+		viewStudentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cd.changePanne(layeredPane, viewStudentPanel);
+				cd.viewData(studentTable, "student" );	
+			}
+		});
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cd.deleteData();
+			}
+		});
+		
 		if (user.getRole().equals("admin")) {
-			System.out.println("Hi");
 			teacherPannel.add(addTeacherButton);
 			teacherPannel.add(btnEdit);
 			teacherPannel.add(btnDelete);
 			viewCoursePannel.add(addCourseButton);
 			viewCoursePannel.add(editCourseButton);
 			viewCoursePannel.add(deleteCourseButton);
+			viewStudentPanel.add(editStudentButton);
+			viewStudentPanel.add(btnNewButton_1_1);
 		}
 	}
 }
