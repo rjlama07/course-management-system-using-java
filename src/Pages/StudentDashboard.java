@@ -44,6 +44,7 @@ public class StudentDashboard extends JPanel {
 	private JPasswordField newPasswordField;
 	private JPasswordField cPasswordfield;
 	private JTable table;
+	private JTable table_course;
 
 	/**
 	 * Create the panel.
@@ -82,8 +83,8 @@ public class StudentDashboard extends JPanel {
 		dashboardButton.setBounds(31, 168, 207, 29);
 		panel.add(dashboardButton);
 
-		JButton settingButton = new JButton("setting");
-		settingButton.setBounds(31, 250, 207, 29);
+		JButton settingButton = new JButton("Settings");
+		settingButton.setBounds(31, 291, 207, 29);
 		panel.add(settingButton);
 
 		JLayeredPane layeredPane = new JLayeredPane();
@@ -127,6 +128,12 @@ public class StudentDashboard extends JPanel {
 		viewTeacherButton.setBorderPainted(false);
 		viewTeacherButton.setBounds(31, 209, 207, 29);
 		panel.add(viewTeacherButton);
+		
+		JButton viewCourseButton = new JButton("View Course");
+		
+		viewCourseButton.setBorderPainted(false);
+		viewCourseButton.setBounds(31, 250, 207, 29);
+		panel.add(viewCourseButton);
 		JLabel lblNewLabel_2 = new JLabel("Settings");
 		lblNewLabel_2.setBounds(21, 20, 106, 26);
 		settingPannel.add(lblNewLabel_2);
@@ -189,6 +196,21 @@ public class StudentDashboard extends JPanel {
 
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		
+		JPanel viewCoursePannel = new JPanel();
+		layeredPane.add(viewCoursePannel, "name_112593222370042");
+		viewCoursePannel.setLayout(null);
+		
+		JLabel lblNewLabel_6 = new JLabel("Cources Available");
+		lblNewLabel_6.setBounds(25, 35, 126, 30);
+		viewCoursePannel.add(lblNewLabel_6);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(25, 114, 498, 360);
+		viewCoursePannel.add(scrollPane_1);
+		
+		table_course = new JTable();
+		scrollPane_1.setViewportView(table_course);
 		settingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layeredPane.removeAll();
@@ -267,7 +289,7 @@ public class StudentDashboard extends JPanel {
 					model.setRowCount(0); // Clear the table model
 					int column = rsmd.getColumnCount();
 					String[] columnName = new String[column];
-					System.out.println(column);
+					
 					for (int i = 0; i < column; i++) {
 						columnName[i] = rsmd.getColumnName(i + 1);
 
@@ -296,6 +318,52 @@ public class StudentDashboard extends JPanel {
 					JOptionPane.showMessageDialog(null, ex.getMessage());
 				}
 
+			}
+		});
+		viewCourseButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				layeredPane.removeAll();
+				layeredPane.add(viewCoursePannel);
+				layeredPane.repaint();
+				layeredPane.revalidate();
+				try {
+					String query = "SELECT * FROM `cources`";
+					PreparedStatement pst = dc.pst(query);
+					ResultSet rs = pst.executeQuery();
+					ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+					DefaultTableModel model = (DefaultTableModel) table_course.getModel();
+					model.setRowCount(0); // Clear the table model
+					int column = rsmd.getColumnCount();
+					String[] columnName = new String[column];
+					System.out.println(column);
+					for (int i = 0; i < column; i++) {
+						columnName[i] = rsmd.getColumnName(i + 1);
+
+					}
+					model.setColumnIdentifiers(columnName);
+					String coursename, totalYear, seats, id;
+
+					List<String> myList = new ArrayList<>();
+
+					while (rs.next()) {
+						coursename = rs.getString(1);
+						totalYear = rs.getString(2);
+						seats = rs.getString(3);
+						id = rs.getString(4);
+						myList = new ArrayList<>();
+						myList.add(id);
+						myList.add(coursename);
+						myList.add(totalYear);
+						myList.add(seats);
+						Vector<String> row = new Vector<String>(myList);
+						model.addRow(row);
+					}
+					pst.close();
+
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+				}
+				
 			}
 		});
 	}
