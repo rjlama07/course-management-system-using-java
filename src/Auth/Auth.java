@@ -57,8 +57,10 @@ public class Auth {
 							}
 							else if(user.getRole().equals("teacher"))
 							{
+								mainPanel.setVisible(false);
+								new StudentDashboard(frame,user,dc);
 								JOptionPane.showMessageDialog(null, "Login in as Teacher");
-								frame.setVisible(false);	
+									
 							}
 							else if(user.getRole().equals("admin"))
 							{

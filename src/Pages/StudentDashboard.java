@@ -138,7 +138,11 @@ public class StudentDashboard extends JPanel {
 		viewStudentButton.setBorderPainted(false);
 		viewStudentButton.setBounds(31, 328, 207, 29);
 		panel.add(viewStudentButton);
-
+		
+		JLabel roleS = new JLabel("");
+		roleS.setBounds(106, 56, 61, 16);
+		panel.add(roleS);
+        roleS.setText(user.getRole());
 		JPanel teacherPannel = new JPanel();
 		layeredPane.add(teacherPannel, "name_100663201273375");
 		teacherPannel.setLayout(null);
@@ -279,6 +283,10 @@ public class StudentDashboard extends JPanel {
 		
 		studentTable = new JTable();
 		scrollPane_2.setViewportView(studentTable);
+		
+		JButton progessButtton = new JButton("See Reasult");
+		progessButtton.setBounds(268, 84, 117, 29);
+		
 		
 		JButton editStudentButton = new JButton("Edit");
 		editStudentButton.setBounds(35, 84, 117, 29);
@@ -511,6 +519,12 @@ public class StudentDashboard extends JPanel {
 				cd.deleteData();
 			}
 		});
+		progessButtton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewProgess vp= new ViewProgess();
+			    vp.setVisible(true);
+			}
+		});
 		
 		if (user.getRole().equals("admin")) {
 			teacherPannel.add(addTeacherButton);
@@ -521,6 +535,7 @@ public class StudentDashboard extends JPanel {
 			viewCoursePannel.add(deleteCourseButton);
 			viewStudentPanel.add(editStudentButton);
 			viewStudentPanel.add(btnNewButton_1_1);
+			viewStudentPanel.add(progessButtton);
 		}
 	}
 }
