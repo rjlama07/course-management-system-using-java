@@ -122,5 +122,12 @@ public class ChangeData {
 			JOptionPane.showMessageDialog(null, ex.getMessage());
 		}
 	}
+	
+	///make first letter capital
+	public String makeCapital(String a) {
+		return a.substring(0,1).toUpperCase()+a.substring(1);
+	}
+	
+	
 
 }

@@ -53,9 +53,9 @@ public class StudentDashboard extends JPanel {
 	 * Create the panel.
 	 */
 	public StudentDashboard(JFrame frame, Usermodel user, DatabaseConnector dc) {
-
+		ChangeData cd=new ChangeData(dc);
 		String name = user.getFirstName();
-		name = name.substring(0, 1).toUpperCase() + name.substring(1);
+		name = cd.makeCapital(name);
 		setLayout(null);
 		frame.setBounds(100, 100, 808, 480);
 		JPanel mainPanel = new JPanel();
@@ -143,7 +143,8 @@ public class StudentDashboard extends JPanel {
 		JLabel roleS = new JLabel("");
 		roleS.setBounds(106, 56, 61, 16);
 		panel.add(roleS);
-        roleS.setText(user.getRole());
+		String role=cd.makeCapital(user.getRole());
+        roleS.setText(role);
 		JPanel teacherPannel = new JPanel();
 		layeredPane.add(teacherPannel, "name_100663201273375");
 		teacherPannel.setLayout(null);
@@ -307,10 +308,6 @@ public class StudentDashboard extends JPanel {
 		editCourseButton.setBounds(147, 77, 117, 29);
 
 		JButton addCourseButton = new JButton("Add");
-		addCourseButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		addCourseButton.setBounds(25, 77, 117, 29);
 
 		JButton deleteCourseButton = new JButton("Delete");
@@ -320,13 +317,10 @@ public class StudentDashboard extends JPanel {
 		addTeacherButton.setBounds(6, 66, 117, 29);
 		settingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layeredPane.removeAll();
-				layeredPane.add(settingPannel);
-				layeredPane.repaint();
-				layeredPane.revalidate();
+				cd.changePanne(layeredPane, settingPannel);
 			}
 		});
-		ChangeData cd=new ChangeData(dc);
+		
 		dashboardButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cd.changePanne(layeredPane, dashboardPannel);
@@ -533,21 +527,19 @@ public class StudentDashboard extends JPanel {
 		});
 		addStudentReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				JTextField gpa = new JTextField();
+				JTextField id = new JTextField();
+				JTextField grade = new JTextField();
+				JTextField moduleName = new JTextField();
+				Object[] fields = { "Enter Student id",id,"Module Name",moduleName, "GPA", gpa,
+						"Grade", grade
+
+				};
+				int result = JOptionPane.showConfirmDialog(null, fields, "Generate Report",
+						JOptionPane.OK_CANCEL_OPTION);
+				if (result == JOptionPane.OK_OPTION) {
 				try {
-					JTextField gpa = new JTextField();
-					JTextField id = new JTextField();
-					JTextField grade = new JTextField();
-					JTextField moduleName = new JTextField();
-					Object[] fields = { "Enter Student id",id,"Module Name",moduleName, "GPA", gpa,
-							"Grade", grade
-
-					};
-
-					int result = JOptionPane.showConfirmDialog(null, fields, "Edit Course",
-							JOptionPane.OK_CANCEL_OPTION);
-					if (result == JOptionPane.OK_OPTION) {
-
-						String query = "UPDATE studentresult SET gpa = ?,modulename=?, grade = ? WHERE student_id = ?";
+						String query = "INSERT INTO `studentresult` (`GPA`, `ModuleName`, `GRADE`, `student_id`) VALUES ( ?, ?, ?, ?)";
 						PreparedStatement pst = dc.pst(query);
 						pst.setString(1, gpa.getText());
 						pst.setString(2, moduleName.getText());
@@ -556,10 +548,12 @@ public class StudentDashboard extends JPanel {
 						pst.execute();
 						JOptionPane.showMessageDialog(null, "Report recorded");
 					}
+					
 
-				} catch (Exception ex) {
+				 catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage());
 
+				}
 				}
 			}
 		});

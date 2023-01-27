@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 import Connector.DatabaseConnector;
+import Exceptions.NoRecordFound;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -69,33 +70,39 @@ public class ViewProgess extends JFrame {
 					PreparedStatement pst = dc.pst(query);
 					pst.setString(1, textArea.getText());
 					ResultSet rs = pst.executeQuery();
-					ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-					DefaultTableModel model = (DefaultTableModel) table.getModel();
-					model.setRowCount(0); // Clear the table model
-					int column = rsmd.getColumnCount();
-					String[] columnName = new String[column];
+					if(rs.next())
+					{
+						ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+						DefaultTableModel model = (DefaultTableModel) table.getModel();
+						model.setRowCount(0); // Clear the table model
+						int column = rsmd.getColumnCount();
+						String[] columnName = new String[column];
 
-					for (int i = 0; i < column; i++) {
-						columnName[i] = rsmd.getColumnName(i + 1);
+						for (int i = 0; i < column; i++) {
+							columnName[i] = rsmd.getColumnName(i + 1);
 
+						}
+						model.setColumnIdentifiers(columnName);
+						String student_id, moduleName, gpa, grade;
+
+						List<String> myList = new ArrayList<>();
+
+						while (rs.next()) {
+							student_id = rs.getString(1);
+							moduleName = rs.getString(2);
+							gpa = rs.getString(3);
+							grade = rs.getString(4);
+							myList = new ArrayList<>();
+							myList.add(student_id);
+							myList.add(moduleName);
+							myList.add(gpa);
+							myList.add(grade);
+							Vector<String> row = new Vector<String>(myList);
+							model.addRow(row);
+						}
 					}
-					model.setColumnIdentifiers(columnName);
-					String student_id, moduleName, gpa, grade;
-
-					List<String> myList = new ArrayList<>();
-
-					while (rs.next()) {
-						student_id = rs.getString(1);
-						moduleName = rs.getString(2);
-						gpa = rs.getString(3);
-						grade = rs.getString(4);
-						myList = new ArrayList<>();
-						myList.add(student_id);
-						myList.add(moduleName);
-						myList.add(gpa);
-						myList.add(grade);
-						Vector<String> row = new Vector<String>(myList);
-						model.addRow(row);
+					else {
+						throw new NoRecordFound("No record found for given ID");
 					}
 					PreparedStatement pst1=dc.pst(query1);
 					pst1.setString(1,textArea.getText());
