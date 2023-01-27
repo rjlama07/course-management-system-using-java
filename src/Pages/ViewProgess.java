@@ -36,7 +36,7 @@ public class ViewProgess extends JFrame {
 	 */
 	public ViewProgess() {
 		DatabaseConnector dc=new DatabaseConnector();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 664, 414);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

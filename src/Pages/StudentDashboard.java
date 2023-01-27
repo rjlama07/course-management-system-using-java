@@ -98,6 +98,7 @@ public class StudentDashboard extends JPanel {
 		JPanel dashboardPannel = new JPanel();
 		layeredPane.add(dashboardPannel, "name_76657310817167");
 		dashboardPannel.setLayout(null);
+		
 
 		JLabel lblNewLabel_1 = new JLabel("Student Dashboard");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -283,6 +284,11 @@ public class StudentDashboard extends JPanel {
 		
 		studentTable = new JTable();
 		scrollPane_2.setViewportView(studentTable);
+		
+		JButton addStudentReport = new JButton("Generate Report");
+		
+		addStudentReport.setBounds(25, 113, 160, 29);
+		
 		
 		JButton progessButtton = new JButton("See Reasult");
 		progessButtton.setBounds(268, 84, 117, 29);
@@ -525,7 +531,43 @@ public class StudentDashboard extends JPanel {
 			    vp.setVisible(true);
 			}
 		});
-		
+		addStudentReport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JTextField gpa = new JTextField();
+					JTextField id = new JTextField();
+					JTextField grade = new JTextField();
+					JTextField moduleName = new JTextField();
+					Object[] fields = { "Enter Student id",id,"Module Name",moduleName, "GPA", gpa,
+							"Grade", grade
+
+					};
+
+					int result = JOptionPane.showConfirmDialog(null, fields, "Edit Course",
+							JOptionPane.OK_CANCEL_OPTION);
+					if (result == JOptionPane.OK_OPTION) {
+
+						String query = "UPDATE studentresult SET gpa = ?,modulename=?, grade = ? WHERE student_id = ?";
+						PreparedStatement pst = dc.pst(query);
+						pst.setString(1, gpa.getText());
+						pst.setString(2, moduleName.getText());
+						pst.setString(3, grade.getText());
+						pst.setString(4, id.getText());
+						pst.execute();
+						JOptionPane.showMessageDialog(null, "Report recorded");
+					}
+
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+
+				}
+			}
+		});
+	   if(user.getRole().equals("teacher"))
+	   {
+			viewStudentPanel.add(addStudentReport);
+	   }
+	
 		if (user.getRole().equals("admin")) {
 			teacherPannel.add(addTeacherButton);
 			teacherPannel.add(btnEdit);
