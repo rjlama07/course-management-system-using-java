@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
@@ -37,7 +38,10 @@ import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.JScrollPane;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class StudentDashboard extends JPanel {
 
@@ -48,10 +52,19 @@ public class StudentDashboard extends JPanel {
 	private JTable table;
 	private JTable table_course;
 	private JTable studentTable;
+	private JTextField textField;
 
 	/**
 	 * Create the panel.
 	 */
+	
+	public void search(DefaultTableModel model,JTable table,String str) {
+		model=(DefaultTableModel) table.getModel();
+		TableRowSorter<DefaultTableModel> trs =new TableRowSorter<>(model);
+		table.setRowSorter(trs);
+		trs.setRowFilter(RowFilter.regexFilter(str));
+		
+	}
 	public StudentDashboard(JFrame frame, Usermodel user, DatabaseConnector dc) {
 		ChangeData cd=new ChangeData(dc);
 		String name = user.getFirstName();
@@ -286,22 +299,28 @@ public class StudentDashboard extends JPanel {
 		studentTable = new JTable();
 		scrollPane_2.setViewportView(studentTable);
 		
+		textField = new JTextField();
+		
+		textField.setBounds(369, 80, 154, 34);
+		viewStudentPanel.add(textField);
+		textField.setColumns(10);
+		
 		JButton addStudentReport = new JButton("Generate Report");
 		
 		addStudentReport.setBounds(25, 113, 160, 29);
 		
 		
 		JButton progessButtton = new JButton("See Reasult");
-		progessButtton.setBounds(268, 84, 117, 29);
+		progessButtton.setBounds(254, 84, 117, 29);
 		
 		
 		JButton editStudentButton = new JButton("Edit");
-		editStudentButton.setBounds(35, 84, 117, 29);
+		editStudentButton.setBounds(25, 84, 117, 29);
 		
 		
 		JButton btnNewButton_1_1 = new JButton("Delete");
 		
-		btnNewButton_1_1.setBounds(153, 84, 117, 29);
+		btnNewButton_1_1.setBounds(139, 84, 117, 29);
 		
 
 		JButton editCourseButton = new JButton("Edit");
@@ -326,11 +345,11 @@ public class StudentDashboard extends JPanel {
 				cd.changePanne(layeredPane, dashboardPannel);
 			}
 		});
-		
+		DefaultTableModel viewTeacherModel = null;
 		viewTeacherButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cd.changePanne(layeredPane, teacherPannel);
-				cd.viewData(table, "teacher");
+				cd.viewData(table, "teacher",viewTeacherModel);
 
 			}
 		});
@@ -508,10 +527,12 @@ public class StudentDashboard extends JPanel {
 				cd.editData();
 			}
 		});
+		DefaultTableModel viewStudentmodel = null;
+		
 		viewStudentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cd.changePanne(layeredPane, viewStudentPanel);
-				cd.viewData(studentTable, "student" );	
+				cd.viewData(studentTable, "student",viewStudentmodel );	
 			}
 		});
 		btnNewButton_1_1.addActionListener(new ActionListener() {
@@ -557,6 +578,12 @@ public class StudentDashboard extends JPanel {
 				}
 			}
 		});
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				search(viewStudentmodel, studentTable, textField.getText());
+			}
+		});
 	   if(user.getRole().equals("teacher"))
 	   {
 			viewStudentPanel.add(addStudentReport);
@@ -572,6 +599,11 @@ public class StudentDashboard extends JPanel {
 			viewStudentPanel.add(editStudentButton);
 			viewStudentPanel.add(btnNewButton_1_1);
 			viewStudentPanel.add(progessButtton);
+			JLabel lblNewLabel_7 = new JLabel("seach");
+			lblNewLabel_7.setHorizontalAlignment(SwingConstants.LEFT);
+			lblNewLabel_7.setFont(new Font("Krub", Font.PLAIN, 12));
+			lblNewLabel_7.setBounds(373, 69, 61, 16);
+			viewStudentPanel.add(lblNewLabel_7);
 		}
 	}
 }

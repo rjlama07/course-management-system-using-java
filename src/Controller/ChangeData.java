@@ -82,14 +82,14 @@ public class ChangeData {
 	
 	
 	///view Data from database
-	public void viewData(JTable table,String role) {
+	public void viewData(JTable table,String role,DefaultTableModel model) {
 		try {
 			String query = "SELECT ID,email,firstname,lastname FROM `users` WHERE role=?";
 			PreparedStatement pst = dc.pst(query);
 			pst.setString(1, role);
 			ResultSet rs = pst.executeQuery();
 			ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			 model = (DefaultTableModel) table.getModel();
 			model.setRowCount(0); // Clear the table model
 			int column = rsmd.getColumnCount();
 			String[] columnName = new String[column];
