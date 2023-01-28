@@ -63,15 +63,15 @@ public class ViewProgess extends JFrame {
 		
 		JButton btnNewButton = new JButton("search");
 		btnNewButton.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				boolean isData=false;
 				try {
-					String query = "SELECT * FROM `studentresult` WHERE student_id=?";
+					String query = "SELECT * from studentresult WHERE student_id=?;";
 					String query1 = "SELECT firstname,lastname FROM `users` WHERE id=?";
 					PreparedStatement pst = dc.pst(query);
-					pst.setString(1, textArea.getText());
-					ResultSet rs = pst.executeQuery();
-					if(rs.next())
-					{
+					pst.setString(1,textArea.getText());
+					ResultSet rs = pst.executeQuery(); 
 						ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
 						DefaultTableModel model = (DefaultTableModel) table.getModel();
 						model.setRowCount(0); // Clear the table model
@@ -86,24 +86,24 @@ public class ViewProgess extends JFrame {
 						String student_id, moduleName, gpa, grade;
 
 						List<String> myList = new ArrayList<>();
-
 						while (rs.next()) {
+							isData=true;
 							student_id = rs.getString(1);
 							moduleName = rs.getString(2);
 							gpa = rs.getString(3);
 							grade = rs.getString(4);
-							myList = new ArrayList<>();
 							myList.add(student_id);
 							myList.add(moduleName);
 							myList.add(gpa);
 							myList.add(grade);
 							Vector<String> row = new Vector<String>(myList);
+							myList = new ArrayList<>();
 							model.addRow(row);
 						}
-					}
-					else {
-						throw new NoRecordFound("No record found for given ID");
-					}
+						if(!isData)
+						{
+							throw new NoRecordFound("No record found for the given id");
+						}
 					PreparedStatement pst1=dc.pst(query1);
 					pst1.setString(1,textArea.getText());
 					ResultSet rs1=pst1.executeQuery();
