@@ -353,6 +353,8 @@ public class StudentDashboard extends JPanel {
 
 			}
 		});
+		table.setEnabled(false);
+		table_course.setEnabled(false);
 		viewCourseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cd.changePanne(layeredPane, viewCoursePannel);
@@ -527,6 +529,7 @@ public class StudentDashboard extends JPanel {
 				cd.editData();
 			}
 		});
+		studentTable.setEnabled(false);
 		DefaultTableModel viewStudentmodel = null;
 		
 		viewStudentButton.addActionListener(new ActionListener() {

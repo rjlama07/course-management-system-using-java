@@ -10,8 +10,6 @@ public class DatabaseConnector {
 		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/coursemanagementsystem", "root", "");
 		String query=qur;
 		PreparedStatement pst=con.prepareStatement(query);
-		return pst;
-		
+		return pst;	
 	}
-
 }

@@ -11,7 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
@@ -126,6 +128,15 @@ public class ChangeData {
 	///make first letter capital
 	public String makeCapital(String a) {
 		return a.substring(0,1).toUpperCase()+a.substring(1);
+	}
+	
+	//search implementation
+	public void search(DefaultTableModel model,JTable table,String str) {
+		model=(DefaultTableModel) table.getModel();
+		TableRowSorter<DefaultTableModel> trs =new TableRowSorter<>(model);
+		table.setRowSorter(trs);
+		trs.setRowFilter(RowFilter.regexFilter(str));
+		
 	}
 	
 	
