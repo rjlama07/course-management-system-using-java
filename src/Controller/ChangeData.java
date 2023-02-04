@@ -53,6 +53,47 @@ public class ChangeData {
 		}
 	}
 	
+	//view Course
+	public void viewCourse(JTable table_course,DefaultTableModel model) {
+		try {
+			String query = "SELECT * FROM `cources`";
+			PreparedStatement pst = dc.pst(query);
+			ResultSet rs = pst.executeQuery();
+			ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+			 model = (DefaultTableModel) table_course.getModel();
+			model.setRowCount(0); // Clear the table model
+			int column = rsmd.getColumnCount();
+			String[] columnName = new String[column];
+			System.out.println(column);
+			for (int i = 0; i < column; i++) {
+				columnName[i] = rsmd.getColumnName(i + 1);
+
+			}
+			model.setColumnIdentifiers(columnName);
+			String coursename, totalYear, seats, id;
+
+			List<String> myList = new ArrayList<>();
+
+			while (rs.next()) {
+				id = rs.getString(1);
+				coursename = rs.getString(2);
+				totalYear = rs.getString(3);
+				seats = rs.getString(4);
+				myList = new ArrayList<>();
+				myList.add(id);
+				myList.add(coursename);
+				myList.add(totalYear);
+				myList.add(seats);
+				Vector<String> row = new Vector<String>(myList);
+				model.addRow(row);
+			}
+			pst.close();
+
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage());
+		}
+	}
+	
 	//edit from users
 	public void editData()
 	{

@@ -7,16 +7,12 @@ import javax.swing.JLabel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import com.mysql.cj.jdbc.result.ResultSetMetaData;
+
 
 import Connector.DatabaseConnector;
 import Controller.ChangeData;
@@ -54,6 +50,7 @@ public class StudentDashboard extends JPanel {
 	private JTable studentTable;
 	private JTextField textField;
 	private JTextField teacherSearch;
+	private JTextField course_search;
 
 	/**
 	 * Create the panel.
@@ -108,16 +105,6 @@ public class StudentDashboard extends JPanel {
 		layeredPane.setBounds(268, 0, 540, 480);
 		mainPanel.add(layeredPane);
 		layeredPane.setLayout(new CardLayout(0, 0));
-
-		JPanel dashboardPannel = new JPanel();
-		layeredPane.add(dashboardPannel, "name_76657310817167");
-		dashboardPannel.setLayout(null);
-		
-
-		JLabel lblNewLabel_1 = new JLabel("Student Dashboard");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(166, 5, 177, 43);
-		dashboardPannel.add(lblNewLabel_1);
 		settingButton.setBorderPainted(false);
 
 		JButton logoutButton = new JButton("Log Out");
@@ -159,6 +146,78 @@ public class StudentDashboard extends JPanel {
 		panel.add(roleS);
 		String role=cd.makeCapital(user.getRole());
         roleS.setText(role);
+		
+				JPanel dashboardPannel = new JPanel();
+				layeredPane.add(dashboardPannel, "name_332999382465792");
+				dashboardPannel.setLayout(null);
+				
+
+				JLabel lblNewLabel_1 = new JLabel("Student Dashboard");
+				lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+				lblNewLabel_1.setBounds(166, 5, 177, 43);
+				dashboardPannel.add(lblNewLabel_1);
+		
+		JPanel viewStudentPanel = new JPanel();
+		layeredPane.add(viewStudentPanel, "name_140162294566916");
+		viewStudentPanel.setLayout(null);
+		
+		JLabel Students = new JLabel("Students");
+		Students.setFont(new Font("Dialog", Font.PLAIN, 16));
+		Students.setBounds(25, 49, 92, 16);
+		viewStudentPanel.add(Students);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(29, 149, 494, 290);
+		viewStudentPanel.add(scrollPane_2);
+		
+		studentTable = new JTable();
+		scrollPane_2.setViewportView(studentTable);
+		
+		textField = new JTextField();
+		
+		
+		textField.setBounds(369, 80, 154, 34);
+		viewStudentPanel.add(textField);
+		textField.setColumns(10);
+		
+		
+		JButton progessButtton = new JButton("See Result");
+		progessButtton.setBounds(254, 84, 117, 29);
+		
+		
+		JButton editStudentButton = new JButton("Edit");
+		editStudentButton.setBounds(25, 84, 117, 29);
+		
+		
+		JButton btnNewButton_1_1 = new JButton("Delete");
+		
+		btnNewButton_1_1.setBounds(139, 84, 117, 29);
+		editStudentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cd.editData();
+			}
+		});
+		studentTable.setEnabled(false);
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cd.deleteData();
+			}
+		});
+		progessButtton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewProgess vp= new ViewProgess();
+			    vp.setVisible(true);
+			}
+		});
+		
+		viewStudentPanel.add(editStudentButton);
+		viewStudentPanel.add(btnNewButton_1_1);
+		viewStudentPanel.add(progessButtton);
+		JLabel lblNewLabel_7_1 = new JLabel("seach");
+		lblNewLabel_7_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_7_1.setFont(new Font("Krub", Font.PLAIN, 12));
+		lblNewLabel_7_1.setBounds(373, 69, 61, 16);
+		viewStudentPanel.add(lblNewLabel_7_1);
 		JPanel teacherPannel = new JPanel();
 		layeredPane.add(teacherPannel, "name_100663201273375");
 		teacherPannel.setLayout(null);
@@ -284,44 +343,9 @@ public class StudentDashboard extends JPanel {
 		table_course = new JTable();
 		scrollPane_1.setViewportView(table_course);
 		
-		JPanel viewStudentPanel = new JPanel();
-		layeredPane.add(viewStudentPanel, "name_140162294566916");
-		viewStudentPanel.setLayout(null);
-		
-		JLabel Students = new JLabel("Students");
-		Students.setFont(new Font("Dialog", Font.PLAIN, 16));
-		Students.setBounds(25, 49, 92, 16);
-		viewStudentPanel.add(Students);
-		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(29, 149, 494, 290);
-		viewStudentPanel.add(scrollPane_2);
-		
-		studentTable = new JTable();
-		scrollPane_2.setViewportView(studentTable);
-		
-		textField = new JTextField();
-		
-		textField.setBounds(369, 80, 154, 34);
-		viewStudentPanel.add(textField);
-		textField.setColumns(10);
-		
 		JButton addStudentReport = new JButton("Generate Report");
 		
 		addStudentReport.setBounds(25, 113, 160, 29);
-		
-		
-		JButton progessButtton = new JButton("See Reasult");
-		progessButtton.setBounds(254, 84, 117, 29);
-		
-		
-		JButton editStudentButton = new JButton("Edit");
-		editStudentButton.setBounds(25, 84, 117, 29);
-		
-		
-		JButton btnNewButton_1_1 = new JButton("Delete");
-		
-		btnNewButton_1_1.setBounds(139, 84, 117, 29);
 		
 
 		JButton editCourseButton = new JButton("Edit");
@@ -357,54 +381,20 @@ public class StudentDashboard extends JPanel {
 		table.setEnabled(false);
 		
 		teacherSearch = new JTextField();
-		teacherSearch.setBounds(404, 90, 130, 26);
+		teacherSearch.setBounds(385, 65, 130, 28);
 		teacherPannel.add(teacherSearch);
 		teacherSearch.setColumns(10);
 		
 		JLabel lblSearch = new JLabel("search");
-		lblSearch.setBounds(404, 78, 61, 16);
+		lblSearch.setFont(new Font("Krub", Font.PLAIN, 12));
+		lblSearch.setBounds(389, 52, 61, 16);
 		teacherPannel.add(lblSearch);
 		table_course.setEnabled(false);
+		DefaultTableModel courseModel=null;
 		viewCourseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cd.changePanne(layeredPane, viewCoursePannel);
-				try {
-					String query = "SELECT * FROM `cources`";
-					PreparedStatement pst = dc.pst(query);
-					ResultSet rs = pst.executeQuery();
-					ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-					DefaultTableModel model = (DefaultTableModel) table_course.getModel();
-					model.setRowCount(0); // Clear the table model
-					int column = rsmd.getColumnCount();
-					String[] columnName = new String[column];
-					System.out.println(column);
-					for (int i = 0; i < column; i++) {
-						columnName[i] = rsmd.getColumnName(i + 1);
-
-					}
-					model.setColumnIdentifiers(columnName);
-					String coursename, totalYear, seats, id;
-
-					List<String> myList = new ArrayList<>();
-
-					while (rs.next()) {
-						id = rs.getString(1);
-						coursename = rs.getString(2);
-						totalYear = rs.getString(3);
-						seats = rs.getString(4);
-						myList = new ArrayList<>();
-						myList.add(id);
-						myList.add(coursename);
-						myList.add(totalYear);
-						myList.add(seats);
-						Vector<String> row = new Vector<String>(myList);
-						model.addRow(row);
-					}
-					pst.close();
-
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
-				}
+				cd.viewCourse(table_course, courseModel);
 
 			}
 		});
@@ -534,29 +524,12 @@ public class StudentDashboard extends JPanel {
 				}
 			}
 		});
-		editStudentButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cd.editData();
-			}
-		});
-		studentTable.setEnabled(false);
 		DefaultTableModel viewStudentmodel = null;
 		
 		viewStudentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cd.changePanne(layeredPane, viewStudentPanel);
 				cd.viewData(studentTable, "student",viewStudentmodel );	
-			}
-		});
-		btnNewButton_1_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cd.deleteData();
-			}
-		});
-		progessButtton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ViewProgess vp= new ViewProgess();
-			    vp.setVisible(true);
 			}
 		});
 		addStudentReport.addActionListener(new ActionListener() {
@@ -593,8 +566,8 @@ public class StudentDashboard extends JPanel {
 		});
 		textField.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
-				cd.search(viewStudentmodel, studentTable, role);
+			public void keyPressed(KeyEvent e) {
+				cd.search(viewStudentmodel, studentTable, textField.getText());
 			}
 		});
 		teacherSearch.addKeyListener(new KeyAdapter() {
@@ -607,6 +580,28 @@ public class StudentDashboard extends JPanel {
 	   {
 			viewStudentPanel.add(addStudentReport);
 	   }
+	    teacherPannel.add(addTeacherButton);
+		teacherPannel.add(btnEdit);
+		teacherPannel.add(btnDelete);
+		viewCoursePannel.add(addCourseButton);
+		viewCoursePannel.add(editCourseButton);
+		viewCoursePannel.add(deleteCourseButton);
+		
+		course_search = new JTextField();
+		course_search.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				cd.search(courseModel, table_course, course_search.getText().toUpperCase());
+			}
+		});
+		course_search.setBounds(398, 77, 130, 26);
+		viewCoursePannel.add(course_search);
+		course_search.setColumns(10);
+		
+		JLabel lblNewLabel_8 = new JLabel("Search");
+		lblNewLabel_8.setFont(new Font("Krub", Font.PLAIN, 12));
+		lblNewLabel_8.setBounds(398, 62, 61, 16);
+		viewCoursePannel.add(lblNewLabel_8);
 	
 		if (user.getRole().equals("admin")) {
 			teacherPannel.add(addTeacherButton);
