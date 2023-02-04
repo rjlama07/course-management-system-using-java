@@ -53,6 +53,7 @@ public class StudentDashboard extends JPanel {
 	private JTable table_course;
 	private JTable studentTable;
 	private JTextField textField;
+	private JTextField teacherSearch;
 
 	/**
 	 * Create the panel.
@@ -354,6 +355,15 @@ public class StudentDashboard extends JPanel {
 			}
 		});
 		table.setEnabled(false);
+		
+		teacherSearch = new JTextField();
+		teacherSearch.setBounds(404, 90, 130, 26);
+		teacherPannel.add(teacherSearch);
+		teacherSearch.setColumns(10);
+		
+		JLabel lblSearch = new JLabel("search");
+		lblSearch.setBounds(404, 78, 61, 16);
+		teacherPannel.add(lblSearch);
 		table_course.setEnabled(false);
 		viewCourseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -584,7 +594,13 @@ public class StudentDashboard extends JPanel {
 		textField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				search(viewStudentmodel, studentTable, textField.getText());
+				cd.search(viewStudentmodel, studentTable, role);
+			}
+		});
+		teacherSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				cd.search(viewTeacherModel, table, teacherSearch.getText());
 			}
 		});
 	   if(user.getRole().equals("teacher"))
