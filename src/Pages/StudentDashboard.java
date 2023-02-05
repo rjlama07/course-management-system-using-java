@@ -580,12 +580,6 @@ public class StudentDashboard extends JPanel {
 	   {
 			viewStudentPanel.add(addStudentReport);
 	   }
-	    teacherPannel.add(addTeacherButton);
-		teacherPannel.add(btnEdit);
-		teacherPannel.add(btnDelete);
-		viewCoursePannel.add(addCourseButton);
-		viewCoursePannel.add(editCourseButton);
-		viewCoursePannel.add(deleteCourseButton);
 		
 		course_search = new JTextField();
 		course_search.addKeyListener(new KeyAdapter() {

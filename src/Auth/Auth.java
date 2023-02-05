@@ -87,7 +87,7 @@ public class Auth {
     }
 
 
-	public void Signup(Usermodel user,JFrame frame,JPanel panel){
+	public void Signup(Usermodel user,JFrame frame,JPanel panel,String course){
 		Valid validator=new Valid();
 		try{
 			if (!validator.checkEmail(user.getEmail()))
@@ -97,7 +97,7 @@ public class Auth {
 				}
 				else if (validator.checkPassword(user.getPassword()) && user.getPassword().equals(user.getCpassword())) {
 					try {
-						String query = "INSERT INTO `users`(`email`, `password`, `role`,`firstname`,`lastname`) VALUES (?,?,?,?,?)";
+						String query = "INSERT INTO `users`(`email`, `password`, `role`,`firstname`,`lastname`,`course_enrolled`) VALUES (?,?,?,?,?,?)";
 						String query1 = "SELECT role FROM `users` WHERE email=?";
 						PreparedStatement pst1=dc.pst(query1);
 				
@@ -113,6 +113,7 @@ public class Auth {
 							pst.setString(3, user.getRole());
 							pst.setString(4, user.getFirstName());
 							pst.setString(5, user.getLastName());
+							pst.setString(6,course);
 							pst.executeUpdate();
 							JOptionPane.showMessageDialog(null, "You are registered.Login to continue");
 							new LoginPage(frame,dc);

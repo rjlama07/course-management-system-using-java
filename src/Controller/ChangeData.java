@@ -127,7 +127,14 @@ public class ChangeData {
 	///view Data from database
 	public void viewData(JTable table,String role,DefaultTableModel model) {
 		try {
-			String query = "SELECT ID,email,firstname,lastname FROM `users` WHERE role=?";
+			String query;
+			if(role.equals("student"))
+			{
+				 query = "SELECT ID,email,firstname,lastname,course_enrolled FROM `users` WHERE role=?";
+			}
+			else {
+				 query = "SELECT ID,email,firstname,lastname FROM `users` WHERE role=?";
+			}
 			PreparedStatement pst = dc.pst(query);
 			pst.setString(1, role);
 			ResultSet rs = pst.executeQuery();
@@ -151,11 +158,17 @@ public class ChangeData {
 				email = rs.getString(2);
 				firstname = rs.getString(3);
 				lastname = rs.getString(4);
+				
 				myList = new ArrayList<>();
 				myList.add(id);
 				myList.add(email);
 				myList.add(firstname);
 				myList.add(lastname);
+				if(role.equals("student"))
+				{
+					String course_enrolled=rs.getString(5);
+					myList.add(course_enrolled);
+				}
 				Vector<String> row = new Vector<String>(myList);
 				model.addRow(row);
 			}
@@ -179,7 +192,4 @@ public class ChangeData {
 		trs.setRowFilter(RowFilter.regexFilter(str));
 		
 	}
-	
-	
-
 }

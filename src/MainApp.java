@@ -51,8 +51,6 @@ public class MainApp {
 		panel.setLayout(null);
 		DatabaseConnector dc=new DatabaseConnector();
 		new SplashScreen(frame,dc);
-		
-		
 
 	}
 
