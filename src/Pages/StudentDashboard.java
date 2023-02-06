@@ -209,10 +209,7 @@ public class StudentDashboard extends JPanel {
 			    vp.setVisible(true);
 			}
 		});
-		
-		viewStudentPanel.add(editStudentButton);
-		viewStudentPanel.add(btnNewButton_1_1);
-		viewStudentPanel.add(progessButtton);
+	
 		JLabel lblNewLabel_7_1 = new JLabel("seach");
 		lblNewLabel_7_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_7_1.setFont(new Font("Krub", Font.PLAIN, 12));
