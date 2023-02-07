@@ -41,7 +41,7 @@ public class SignupPannel extends JPanel {
 		setLayout(null);
 		final JPanel panel = new JPanel();
 		panel.setBounds(6, 6, 654, 410);
-		frame.setBounds(100, 100, 668, 412);
+		frame.setBounds(100, 100, 675, 420);
 		add(panel);
 		panel.setLayout(null);
 		frame.getContentPane().add(panel);

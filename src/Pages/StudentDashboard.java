@@ -153,8 +153,8 @@ public class StudentDashboard extends JPanel {
 				
 
 				JLabel lblNewLabel_1 = new JLabel("Student Dashboard");
-				lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 				lblNewLabel_1.setBounds(166, 5, 177, 43);
+				lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 				dashboardPannel.add(lblNewLabel_1);
 		
 		JPanel viewStudentPanel = new JPanel();

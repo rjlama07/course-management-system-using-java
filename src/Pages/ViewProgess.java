@@ -77,7 +77,6 @@ public class ViewProgess extends JFrame {
 						model.setRowCount(0); // Clear the table model
 						int column = rsmd.getColumnCount();
 						String[] columnName = new String[column];
-
 						for (int i = 0; i < column; i++) {
 							columnName[i] = rsmd.getColumnName(i + 1);
 
@@ -121,14 +120,15 @@ public class ViewProgess extends JFrame {
 		});
 		btnNewButton.setBounds(514, 62, 87, 23);
 		panel.add(btnNewButton);
-		
 		JLabel lblNewLabel = new JLabel("Student name:");
 		lblNewLabel.setBounds(26, 35, 110, 16);
 		panel.add(lblNewLabel);
-		
-		
 		studentNamelable.setBounds(127, 35, 236, 16);
 		panel.add(studentNamelable);
+		
+		JLabel lblNewLabel_1 = new JLabel("ID:");
+		lblNewLabel_1.setBounds(388, 35, 39, 16);
+		panel.add(lblNewLabel_1);
 		
 	}
 }
