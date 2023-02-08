@@ -1,19 +1,12 @@
 package Pages;
-
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
-
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-
-
-
 import Connector.DatabaseConnector;
 import Controller.ChangeData;
 import Controller.Greet;
@@ -21,20 +14,17 @@ import Controller.Showpassword;
 import Exceptions.PasswordDonotMatch;
 import Models.Usermodel;
 import Validator.Valid;
-
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-
 import java.awt.CardLayout;
 import javax.swing.JPasswordField;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowFilter;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -56,13 +46,7 @@ public class StudentDashboard extends JPanel {
 	 * Create the panel.
 	 */
 	
-	public void search(DefaultTableModel model,JTable table,String str) {
-		model=(DefaultTableModel) table.getModel();
-		TableRowSorter<DefaultTableModel> trs =new TableRowSorter<>(model);
-		table.setRowSorter(trs);
-		trs.setRowFilter(RowFilter.regexFilter(str));
-		
-	}
+	
 	public StudentDashboard(JFrame frame, Usermodel user, DatabaseConnector dc) {
 		ChangeData cd=new ChangeData(dc);
 		String name = user.getFirstName();
@@ -92,13 +76,17 @@ public class StudentDashboard extends JPanel {
 		lblNewLabel.setBounds(6, 0, 96, 107);
 		panel.add(lblNewLabel);
 
-		JButton dashboardButton = new JButton("Dashboard");
+		JButton dashboardButton = new JButton("   Dashboard");
+		ImageIcon dashBoardIcon=new ImageIcon(StudentDashboard.class.getResource("/images/3669363_dashboard_ic_icon.png"));
+		dashBoardIcon=new ImageIcon(cd.scaleImage(dashBoardIcon));
+		dashboardButton.setIcon(dashBoardIcon);
 		dashboardButton.setBorderPainted(false);
-		dashboardButton.setBounds(31, 168, 207, 29);
+		dashboardButton.setBounds(0, 168, 207, 29);
 		panel.add(dashboardButton);
 
-		JButton settingButton = new JButton("Settings");
-		settingButton.setBounds(31, 291, 207, 29);
+		JButton settingButton = new JButton("   Settings");
+		
+		settingButton.setBounds(-12, 287, 207, 29);
 		panel.add(settingButton);
 
 		JLayeredPane layeredPane = new JLayeredPane();
@@ -107,7 +95,10 @@ public class StudentDashboard extends JPanel {
 		layeredPane.setLayout(new CardLayout(0, 0));
 		settingButton.setBorderPainted(false);
 
-		JButton logoutButton = new JButton("Log Out");
+		JButton logoutButton = new JButton("   Log Out");
+		ImageIcon logoutImage=new ImageIcon(StudentDashboard.class.getResource("/images/7853741_logout_kashifarif_exit_out_close_icon.png"));
+		logoutImage=new ImageIcon(cd.scaleImage(logoutImage));
+		logoutButton.setIcon(logoutImage);
 		logoutButton.setForeground(new Color(255, 38, 0));
 		logoutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -122,30 +113,41 @@ public class StudentDashboard extends JPanel {
 			}
 		});
 		logoutButton.setBorderPainted(false);
-		logoutButton.setBounds(31, 394, 207, 29);
+		logoutButton.setBounds(-12, 391, 207, 29);
 		panel.add(logoutButton);
 
-		JButton viewTeacherButton = new JButton("View Teacher");
+		JButton viewTeacherButton = new JButton("    View Teacher");
+		ImageIcon teacherIcon=new ImageIcon(StudentDashboard.class.getResource("/images/techer.png"));
+		teacherIcon =new ImageIcon(cd.scaleImage(teacherIcon));
+		viewTeacherButton.setIcon(teacherIcon);
 		viewTeacherButton.setBorderPainted(false);
-		viewTeacherButton.setBounds(31, 209, 207, 29);
+		viewTeacherButton.setBounds(6, 209, 207, 29);
 		panel.add(viewTeacherButton);
 
-		JButton viewCourseButton = new JButton("View Course");
+		JButton viewCourseButton = new JButton("   Vew Course");
+		ImageIcon courseIcon=new ImageIcon(StudentDashboard.class.getResource("/images/216113_book_icon.png"));
+		courseIcon=new ImageIcon(cd.scaleImage(courseIcon));
+		viewCourseButton.setIcon(courseIcon);
 
 		viewCourseButton.setBorderPainted(false);
-		viewCourseButton.setBounds(31, 250, 207, 29);
+		viewCourseButton.setBounds(0, 250, 207, 29);
 		panel.add(viewCourseButton);
 		
-		JButton viewStudentButton = new JButton("View Student");
+		JButton viewStudentButton = new JButton("   View Student");
+		ImageIcon studentIcon=new ImageIcon(StudentDashboard.class.getResource("/images/graduate.png"));
+		studentIcon=new ImageIcon(cd.scaleImage(studentIcon));
+		viewStudentButton.setIcon(studentIcon);
 		viewStudentButton.setBorderPainted(false);
-		viewStudentButton.setBounds(31, 328, 207, 29);
+		viewStudentButton.setBounds(0, 328, 207, 29);
 		panel.add(viewStudentButton);
-		
 		JLabel roleS = new JLabel("");
 		roleS.setBounds(106, 56, 61, 16);
 		panel.add(roleS);
 		String role=cd.makeCapital(user.getRole());
         roleS.setText(role);
+        ImageIcon settingsImage=new ImageIcon(StudentDashboard.class.getResource("/images/185096_settings_icon.png"));
+        settingsImage = new ImageIcon(cd.scaleImage(settingsImage));
+        settingButton.setIcon(settingsImage);
 		
 				JPanel dashboardPannel = new JPanel();
 				layeredPane.add(dashboardPannel, "name_332999382465792");

@@ -49,14 +49,12 @@ public class ViewProgess extends JFrame {
 		panel.setBounds(6, 6, 652, 374);
 		contentPane.add(panel);
 		panel.setLayout(null);
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(26, 87, 608, 281);
 		panel.add(scrollPane);
 		JLabel studentNamelable = new JLabel("");
 		table = new JTable();
 		scrollPane.setViewportView(table);
-		
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(411, 35, 183, 23);
 		panel.add(textArea);

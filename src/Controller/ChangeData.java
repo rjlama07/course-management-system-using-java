@@ -1,11 +1,13 @@
 package Controller;
 
+import java.awt.Image;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -177,6 +179,14 @@ public class ChangeData {
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, ex.getMessage());
 		}
+	}
+	
+	//scale Image
+	public Image scaleImage(ImageIcon icons)
+	{
+		Image image = icons.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(25, 25,  java.awt.Image.SCALE_SMOOTH); 
+        return newimg;
 	}
 	
 	///make first letter capital
