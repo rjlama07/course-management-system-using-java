@@ -38,7 +38,7 @@ public class Auth {
 				else{
 					try {
 						
-						String query="SELECT * FROM `users` WHERE email=? and password=?";
+						String query="SELECT * FROM `users` WHERE email=? and BINARY password=?";
 						PreparedStatement pst=dc.pst(query);
 						pst.setString(1, username);
 						pst.setString(2,password);
