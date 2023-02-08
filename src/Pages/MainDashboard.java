@@ -5,17 +5,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.PreparedStatement;
+
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import Connector.DatabaseConnector;
 import Controller.ChangeData;
 import Controller.Greet;
 import Controller.Showpassword;
-import Exceptions.PasswordDonotMatch;
 import Models.TotalData;
 import Models.Usermodel;
-import Validator.Valid;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -97,7 +95,7 @@ public class MainDashboard extends JPanel {
 
 		JButton settingButton = new JButton("   Settings");
 
-		settingButton.setBounds(-12, 291, 207, 29);
+		settingButton.setBounds(-12, 326, 207, 29);
 		panel.add(settingButton);
 
 		JLayeredPane layeredPane = new JLayeredPane();
@@ -150,7 +148,7 @@ public class MainDashboard extends JPanel {
 		studentIcon = new ImageIcon(cd.scaleImage(studentIcon, 25, 25));
 		viewStudentButton.setIcon(studentIcon);
 		viewStudentButton.setBorderPainted(false);
-		viewStudentButton.setBounds(0, 328, 207, 29);
+		viewStudentButton.setBounds(0, 285, 207, 29);
 		panel.add(viewStudentButton);
 		JLabel roleS = new JLabel("");
 		roleS.setBounds(106, 56, 61, 16);
@@ -366,35 +364,10 @@ public class MainDashboard extends JPanel {
 				String oldPassword = new String(passwordField.getPassword());
 				String newPassword = new String(newPasswordField.getPassword());
 				String cPassword = new String(cPasswordfield.getPassword());
-				try {
-					
-
-					if (oldPassword.equals(user.getPassword())) {
-						Valid valid = new Valid();
-						if (valid.checkPassword(newPassword)) {
-							if (newPassword.equals(cPassword)) {
-								String query = "UPDATE users SET password=? WHERE email=?";
-								PreparedStatement pst = dc.pst(query);
-								pst.setString(1, newPassword);
-								pst.setString(2, user.getEmail());
-								pst.execute();
-								JOptionPane.showMessageDialog(null, "Password changed sucessfully");
-								passwordField.setText("");
-								newPasswordField.setText("");
-								cPasswordfield.setText("");
-							} else {
-								throw new PasswordDonotMatch("Please match the new and confirm password");
-							}
-						} else {
-							throw new PasswordDonotMatch(
-									"Password must be valid i.e one uppercase,lowercase,special character and must be atleast 8 character");
-						}
-					} else {
-						throw new PasswordDonotMatch("Yout old password donot match");
-					}
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
-				}
+				cd.changePassword(user, newPassword, cPassword, oldPassword);
+				passwordField.setText("");
+				newPasswordField.setText("");
+				cPasswordfield.setText("");	
 
 			}
 		});
@@ -496,33 +469,7 @@ public class MainDashboard extends JPanel {
 		});
 		addTeacherButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					JTextField firstname = new JTextField();
-					JTextField lastname = new JTextField();
-					JTextField password = new JTextField();
-					JTextField email = new JTextField();
-					String role = "teacher";
-					Object[] fields = { "firstname", firstname, "lastname", lastname, "Email", email, "Set Password",
-							password };
-					int result = JOptionPane.showConfirmDialog(null, fields, "Add teacher",
-							JOptionPane.OK_CANCEL_OPTION);
-					if (result == JOptionPane.OK_OPTION) {
-
-						String query = "INSERT INTO `users` (`ID`, `email`, `password`, `role`, `firstname`, `lastname`) VALUES (NULL, ?, ?, ?, ?, ?)";
-						PreparedStatement pst = dc.pst(query);
-						pst.setString(1, email.getText());
-						pst.setString(2, password.getText());
-						pst.setString(3, role);
-						pst.setString(4, firstname.getText());
-						pst.setString(5, lastname.getText());
-						pst.execute();
-						JOptionPane.showMessageDialog(null, "Sucessfully added teacher. Refresh to see changes");
-					}
-
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
-
-				}
+				cd.addUser("teacher");
 			}
 		});
 		btnEdit.addActionListener(new ActionListener() {
@@ -532,80 +479,18 @@ public class MainDashboard extends JPanel {
 		});
 		addCourseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					JTextField courseName = new JTextField();
-					JTextField totalYear = new JTextField();
-					JTextField seats = new JTextField();
-					Object[] fields = { "CourseName", courseName, "Total Year", totalYear, "Seats", seats,
-
-					};
-					int result = JOptionPane.showConfirmDialog(null, fields, "Add Course",
-							JOptionPane.OK_CANCEL_OPTION);
-					if (result == JOptionPane.OK_OPTION) {
-
-						String query = "INSERT INTO `cources` ( `ID`,`courseName`, `totalyear`, `seats`) VALUES (NULL,?, ?, ?)";
-						PreparedStatement pst = dc.pst(query);
-						pst.setString(1, courseName.getText());
-						pst.setString(2, totalYear.getText());
-						pst.setString(3, seats.getText());
-						pst.execute();
-						JOptionPane.showMessageDialog(null, "Sucessfully added course. Refresh to see changes");
-					}
-
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
-
-				}
+			cd.addCourse();
 			}
 		});
 		editCourseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					JTextField courseName = new JTextField();
-					JTextField id = new JTextField();
-					JTextField totalYear = new JTextField();
-					JTextField seats = new JTextField();
-					Object[] fields = { "Enter ID of course", id, "CourseName", courseName, "Total Year", totalYear,
-							"Seats", seats,
-
-					};
-
-					int result = JOptionPane.showConfirmDialog(null, fields, "Edit Course",
-							JOptionPane.OK_CANCEL_OPTION);
-					if (result == JOptionPane.OK_OPTION) {
-
-						String query = "UPDATE cources SET courseName = ?, totalyear = ?,seats=? WHERE id = ?";
-						PreparedStatement pst = dc.pst(query);
-						pst.setString(1, courseName.getText());
-						pst.setString(2, totalYear.getText());
-						pst.setString(3, seats.getText());
-						pst.setString(4, id.getText());
-						pst.execute();
-						JOptionPane.showMessageDialog(null, "Sucessfully edited course. Refresh to see changes");
-					}
-
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
-
-				}
+				cd.editCourse();
 
 			}
 		});
 		deleteCourseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String a = JOptionPane.showInputDialog(null, "Enter ID you want to delete");
-				int id = Integer.parseInt(a);
-
-				String query = "DELETE FROM cources WHERE id = ?";
-				try {
-					PreparedStatement pst = dc.pst(query);
-					pst.setInt(1, id);
-					pst.execute();
-					JOptionPane.showMessageDialog(null, "Sucessfully deleted. Refresh to see changes");
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
-
-				}
+				cd.deleteCourse();
 			}
 		});
 		DefaultTableModel viewStudentmodel = null;
@@ -618,32 +503,7 @@ public class MainDashboard extends JPanel {
 		});
 		addStudentReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JTextField gpa = new JTextField();
-				JTextField id = new JTextField();
-				JTextField grade = new JTextField();
-				JTextField moduleName = new JTextField();
-				Object[] fields = { "Enter Student id", id, "Module Name", moduleName, "GPA", gpa, "Grade", grade
-
-				};
-				int result = JOptionPane.showConfirmDialog(null, fields, "Generate Report",
-						JOptionPane.OK_CANCEL_OPTION);
-				if (result == JOptionPane.OK_OPTION) {
-					try {
-						String query = "INSERT INTO `studentresult` (`GPA`, `ModuleName`, `GRADE`, `student_id`) VALUES ( ?, ?, ?, ?)";
-						PreparedStatement pst = dc.pst(query);
-						pst.setString(1, gpa.getText());
-						pst.setString(2, moduleName.getText());
-						pst.setString(3, grade.getText());
-						pst.setString(4, id.getText());
-						pst.execute();
-						JOptionPane.showMessageDialog(null, "Report recorded");
-					}
-
-					catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, ex.getMessage());
-
-					}
-				}
+				cd.addStudentReport();
 			}
 		});
 
@@ -676,7 +536,6 @@ public class MainDashboard extends JPanel {
 		totalStudentlabel.setText(totalStudent);
 		totalTeacherLabel.setText(totalTeacher);
 		totalCourseLabel.setText(totalCourse);
-
 		JLabel lblNewLabel_13 = new JLabel("@copyrights herald college kathmandu");
 		lblNewLabel_13.setFont(new Font("Apple LiSung", Font.PLAIN, 10));
 		lblNewLabel_13.setBounds(378, 458, 162, 16);
@@ -702,5 +561,6 @@ public class MainDashboard extends JPanel {
 			lblNewLabel_7.setBounds(373, 69, 61, 16);
 			viewStudentPanel.add(lblNewLabel_7);
 		}
+		
 	}
 }
