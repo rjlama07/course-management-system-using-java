@@ -20,6 +20,7 @@ import javax.swing.table.TableRowSorter;
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 import Connector.DatabaseConnector;
+import Models.TotalData;
 
 public class ChangeData {
 	DatabaseConnector dc;
@@ -66,7 +67,6 @@ public class ChangeData {
 			model.setRowCount(0); // Clear the table model
 			int column = rsmd.getColumnCount();
 			String[] columnName = new String[column];
-			System.out.println(column);
 			for (int i = 0; i < column; i++) {
 				columnName[i] = rsmd.getColumnName(i + 1);
 
@@ -120,9 +120,38 @@ public class ChangeData {
 			}
 
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage());
+			
 
 		}
+	}
+	///get total numbers of data
+	public TotalData totalUsers() {
+        String query="select count(*) from users where role=?";
+        String query1="select count(*) from cources";
+        try {
+        	PreparedStatement ps1=dc.pst(query);
+        	ps1.setString(1, "teacher");
+        	ResultSet rs=ps1.executeQuery();
+        	rs.next();
+            int teacherCount =  rs.getInt(1);
+            PreparedStatement ps2=dc.pst(query);
+        	ps2.setString(1, "student");
+        	ResultSet rs2=ps2.executeQuery();
+        	rs2.next();
+        	int studentCount = rs2.getInt(1);
+        	PreparedStatement ps3=dc.pst(query1);
+         	ResultSet rs3=ps3.executeQuery();
+         	rs3.next();
+         	int courseCount = rs3.getInt(1);
+         	TotalData totalData=new TotalData(teacherCount,courseCount,studentCount);
+         	return totalData;
+        }
+        
+        catch(Exception ex) {
+        	JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+		return null;
+			
 	}
 	
 	
@@ -152,9 +181,7 @@ public class ChangeData {
 			}
 			model.setColumnIdentifiers(columnName);
 			String firstname, lastname, email, id;
-
 			List<String> myList = new ArrayList<>();
-
 			while (rs.next()) {
 				id = rs.getString(1);
 				email = rs.getString(2);
@@ -182,10 +209,10 @@ public class ChangeData {
 	}
 	
 	//scale Image
-	public Image scaleImage(ImageIcon icons)
+	public Image scaleImage(ImageIcon icons,int height,int width)
 	{
 		Image image = icons.getImage(); // transform it 
-        Image newimg = image.getScaledInstance(25, 25,  java.awt.Image.SCALE_SMOOTH); 
+        Image newimg = image.getScaledInstance(height, width,  java.awt.Image.SCALE_SMOOTH); 
         return newimg;
 	}
 	

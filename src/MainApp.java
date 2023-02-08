@@ -1,10 +1,6 @@
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-
-
 import javax.swing.JPanel;
-
 import Connector.DatabaseConnector;
 import Pages.SplashScreen;
 
@@ -41,6 +37,7 @@ public class MainApp {
 	 * Initialize the contents of the frame.s
 	 */
 	private void initialize() {
+		
 		frame = new JFrame();
 		frame.setTitle("Course Management System");
 		frame.setResizable(false);
@@ -51,6 +48,8 @@ public class MainApp {
 		panel.setLayout(null);
 		DatabaseConnector dc=new DatabaseConnector();
 		new SplashScreen(frame,dc);
+		
+		
 
 	}
 

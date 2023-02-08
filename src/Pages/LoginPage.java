@@ -74,10 +74,6 @@ public class LoginPage extends JPanel {
 		JButton textbutton = new JButton("Sign up");
 		textbutton.setBackground(new Color(0, 255, 235));
 		textbutton.setForeground(new Color(10, 1, 255));
-		textbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		textbutton.setBorderPainted(false);
 		textbutton.setBounds(391, 320, 91, 29);
 		mainPanel.add(textbutton);

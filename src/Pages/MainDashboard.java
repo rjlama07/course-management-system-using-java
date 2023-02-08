@@ -1,4 +1,5 @@
 package Pages;
+
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,6 +13,7 @@ import Controller.ChangeData;
 import Controller.Greet;
 import Controller.Showpassword;
 import Exceptions.PasswordDonotMatch;
+import Models.TotalData;
 import Models.Usermodel;
 import Validator.Valid;
 import java.awt.Color;
@@ -28,8 +30,9 @@ import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.border.BevelBorder;
 
-public class StudentDashboard extends JPanel {
+public class MainDashboard extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JPasswordField passwordField;
@@ -41,14 +44,21 @@ public class StudentDashboard extends JPanel {
 	private JTextField textField;
 	private JTextField teacherSearch;
 	private JTextField course_search;
+	private TotalData data;
+	private String totalTeacher;
+	private String totalStudent;
+	private String totalCourse;
 
 	/**
 	 * Create the panel.
 	 */
-	
-	
-	public StudentDashboard(JFrame frame, Usermodel user, DatabaseConnector dc) {
-		ChangeData cd=new ChangeData(dc);
+
+	public MainDashboard(JFrame frame, Usermodel user, DatabaseConnector dc, TotalData oldData) {
+		data = oldData;
+		totalTeacher = String.valueOf(data.totalTeacher);
+		totalStudent = String.valueOf(data.totalStudent);
+		totalCourse = String.valueOf(data.totalCourse);
+		ChangeData cd = new ChangeData(dc);
 		String name = user.getFirstName();
 		name = cd.makeCapital(name);
 		setLayout(null);
@@ -72,21 +82,22 @@ public class StudentDashboard extends JPanel {
 		panel.add(wName);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(StudentDashboard.class.getResource("/images/logo_good.png")));
+		lblNewLabel.setIcon(new ImageIcon(MainDashboard.class.getResource("/images/logo_good.png")));
 		lblNewLabel.setBounds(6, 0, 96, 107);
 		panel.add(lblNewLabel);
 
 		JButton dashboardButton = new JButton("   Dashboard");
-		ImageIcon dashBoardIcon=new ImageIcon(StudentDashboard.class.getResource("/images/3669363_dashboard_ic_icon.png"));
-		dashBoardIcon=new ImageIcon(cd.scaleImage(dashBoardIcon));
+		ImageIcon dashBoardIcon = new ImageIcon(
+				MainDashboard.class.getResource("/images/3669363_dashboard_ic_icon.png"));
+		dashBoardIcon = new ImageIcon(cd.scaleImage(dashBoardIcon, 25, 25));
 		dashboardButton.setIcon(dashBoardIcon);
 		dashboardButton.setBorderPainted(false);
 		dashboardButton.setBounds(0, 168, 207, 29);
 		panel.add(dashboardButton);
 
 		JButton settingButton = new JButton("   Settings");
-		
-		settingButton.setBounds(-12, 287, 207, 29);
+
+		settingButton.setBounds(-12, 291, 207, 29);
 		panel.add(settingButton);
 
 		JLayeredPane layeredPane = new JLayeredPane();
@@ -96,8 +107,9 @@ public class StudentDashboard extends JPanel {
 		settingButton.setBorderPainted(false);
 
 		JButton logoutButton = new JButton("   Log Out");
-		ImageIcon logoutImage=new ImageIcon(StudentDashboard.class.getResource("/images/7853741_logout_kashifarif_exit_out_close_icon.png"));
-		logoutImage=new ImageIcon(cd.scaleImage(logoutImage));
+		ImageIcon logoutImage = new ImageIcon(
+				MainDashboard.class.getResource("/images/7853741_logout_kashifarif_exit_out_close_icon.png"));
+		logoutImage = new ImageIcon(cd.scaleImage(logoutImage, 25, 25));
 		logoutButton.setIcon(logoutImage);
 		logoutButton.setForeground(new Color(255, 38, 0));
 		logoutButton.addActionListener(new ActionListener() {
@@ -117,25 +129,25 @@ public class StudentDashboard extends JPanel {
 		panel.add(logoutButton);
 
 		JButton viewTeacherButton = new JButton("    View Teacher");
-		ImageIcon teacherIcon=new ImageIcon(StudentDashboard.class.getResource("/images/techer.png"));
-		teacherIcon =new ImageIcon(cd.scaleImage(teacherIcon));
+		ImageIcon teacherIcon = new ImageIcon(MainDashboard.class.getResource("/images/techer.png"));
+		teacherIcon = new ImageIcon(cd.scaleImage(teacherIcon, 25, 25));
 		viewTeacherButton.setIcon(teacherIcon);
 		viewTeacherButton.setBorderPainted(false);
 		viewTeacherButton.setBounds(6, 209, 207, 29);
 		panel.add(viewTeacherButton);
 
 		JButton viewCourseButton = new JButton("   Vew Course");
-		ImageIcon courseIcon=new ImageIcon(StudentDashboard.class.getResource("/images/216113_book_icon.png"));
-		courseIcon=new ImageIcon(cd.scaleImage(courseIcon));
+		ImageIcon courseIcon = new ImageIcon(MainDashboard.class.getResource("/images/216113_book_icon.png"));
+		courseIcon = new ImageIcon(cd.scaleImage(courseIcon, 25, 25));
 		viewCourseButton.setIcon(courseIcon);
 
 		viewCourseButton.setBorderPainted(false);
 		viewCourseButton.setBounds(0, 250, 207, 29);
 		panel.add(viewCourseButton);
-		
+
 		JButton viewStudentButton = new JButton("   View Student");
-		ImageIcon studentIcon=new ImageIcon(StudentDashboard.class.getResource("/images/graduate.png"));
-		studentIcon=new ImageIcon(cd.scaleImage(studentIcon));
+		ImageIcon studentIcon = new ImageIcon(MainDashboard.class.getResource("/images/graduate.png"));
+		studentIcon = new ImageIcon(cd.scaleImage(studentIcon, 25, 25));
 		viewStudentButton.setIcon(studentIcon);
 		viewStudentButton.setBorderPainted(false);
 		viewStudentButton.setBounds(0, 328, 207, 29);
@@ -143,56 +155,121 @@ public class StudentDashboard extends JPanel {
 		JLabel roleS = new JLabel("");
 		roleS.setBounds(106, 56, 61, 16);
 		panel.add(roleS);
-		String role=cd.makeCapital(user.getRole());
-        roleS.setText(role);
-        ImageIcon settingsImage=new ImageIcon(StudentDashboard.class.getResource("/images/185096_settings_icon.png"));
-        settingsImage = new ImageIcon(cd.scaleImage(settingsImage));
-        settingButton.setIcon(settingsImage);
-		
-				JPanel dashboardPannel = new JPanel();
-				layeredPane.add(dashboardPannel, "name_332999382465792");
-				dashboardPannel.setLayout(null);
-				
+		String role = cd.makeCapital(user.getRole());
+		roleS.setText(role);
+		ImageIcon settingsImage = new ImageIcon(MainDashboard.class.getResource("/images/185096_settings_icon.png"));
+		settingsImage = new ImageIcon(cd.scaleImage(settingsImage, 25, 25));
+		settingButton.setIcon(settingsImage);
+		JPanel dashboardPannel = new JPanel();
+		layeredPane.add(dashboardPannel, "name_332999382465792");
+		dashboardPannel.setLayout(null);
+		JLabel lblNewLabel_1 = new JLabel("Dashboard");
+		lblNewLabel_1.setBounds(166, 5, 177, 43);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		dashboardPannel.add(lblNewLabel_1);
 
-				JLabel lblNewLabel_1 = new JLabel("Student Dashboard");
-				lblNewLabel_1.setBounds(166, 5, 177, 43);
-				lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-				dashboardPannel.add(lblNewLabel_1);
-		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_1.setBounds(6, 170, 162, 149);
+		dashboardPannel.add(panel_1);
+		panel_1.setLayout(null);
+
+		JLabel lblNewLabel_10 = new JLabel("");
+		lblNewLabel_10.setIcon(new ImageIcon(MainDashboard.class.getResource("/images/teacherIcon.png")));
+		lblNewLabel_10.setBounds(49, 32, 76, 68);
+		panel_1.add(lblNewLabel_10);
+
+		JLabel lblNewLabel_11 = new JLabel("Total Teacher");
+		lblNewLabel_11.setBounds(33, 20, 102, 16);
+		panel_1.add(lblNewLabel_11);
+
+		JLabel totalTeacherLabel = new JLabel("32");
+		totalTeacherLabel.setForeground(new Color(255, 38, 0));
+		totalTeacherLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		totalTeacherLabel.setFont(new Font("Lao Sangam MN", Font.BOLD, 32));
+		totalTeacherLabel.setBounds(45, 91, 61, 52);
+		panel_1.add(totalTeacherLabel);
+
+		JPanel panel_1_1 = new JPanel();
+		panel_1_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_1_1.setBounds(180, 170, 162, 149);
+		dashboardPannel.add(panel_1_1);
+		panel_1_1.setLayout(null);
+
+		JLabel lblNewLabel_11_1 = new JLabel("Total Student");
+		lblNewLabel_11_1.setBounds(35, 17, 102, 16);
+		panel_1_1.add(lblNewLabel_11_1);
+
+		JLabel lblNewLabel_12 = new JLabel("");
+		lblNewLabel_12.setIcon(new ImageIcon(MainDashboard.class.getResource("/images/3099383_student_man_icon.png")));
+		lblNewLabel_12.setBounds(55, 35, 61, 58);
+		panel_1_1.add(lblNewLabel_12);
+
+		JLabel totalStudentlabel = new JLabel("32");
+		totalStudentlabel.setHorizontalAlignment(SwingConstants.CENTER);
+		totalStudentlabel.setForeground(new Color(147, 32, 146));
+		totalStudentlabel.setFont(new Font("Lao Sangam MN", Font.BOLD, 32));
+		totalStudentlabel.setBounds(55, 91, 61, 52);
+		panel_1_1.add(totalStudentlabel);
+
+		JPanel panel_1_1_1 = new JPanel();
+		panel_1_1_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_1_1_1.setBounds(354, 170, 162, 149);
+		dashboardPannel.add(panel_1_1_1);
+		panel_1_1_1.setLayout(null);
+
+		JLabel lblNewLabel_11_1_1 = new JLabel("Total Courses");
+		lblNewLabel_11_1_1.setBounds(33, 16, 102, 16);
+		panel_1_1_1.add(lblNewLabel_11_1_1);
+
+		JLabel imageCourse = new JLabel("");
+		imageCourse.setIcon(new ImageIcon(
+				MainDashboard.class.getResource("/images/5269088_book_education_leisure_library_magazine_icon.png")));
+		imageCourse.setBounds(53, 44, 61, 48);
+		panel_1_1_1.add(imageCourse);
+
+		JLabel totalCourseLabel = new JLabel("");
+		totalCourseLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		totalCourseLabel.setForeground(new Color(255, 146, 0));
+		totalCourseLabel.setFont(new Font("Lao Sangam MN", Font.BOLD, 32));
+		totalCourseLabel.setBounds(53, 91, 61, 52);
+		panel_1_1_1.add(totalCourseLabel);
+
+		JLabel lblNewLabel_9 = new JLabel("Welcome");
+		lblNewLabel_9.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 16));
+		lblNewLabel_9.setBounds(6, 93, 177, 50);
+		dashboardPannel.add(lblNewLabel_9);
+
 		JPanel viewStudentPanel = new JPanel();
 		layeredPane.add(viewStudentPanel, "name_140162294566916");
 		viewStudentPanel.setLayout(null);
-		
+
 		JLabel Students = new JLabel("Students");
 		Students.setFont(new Font("Dialog", Font.PLAIN, 16));
 		Students.setBounds(25, 49, 92, 16);
 		viewStudentPanel.add(Students);
-		
+
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(29, 149, 494, 290);
 		viewStudentPanel.add(scrollPane_2);
-		
+
 		studentTable = new JTable();
 		scrollPane_2.setViewportView(studentTable);
-		
+
 		textField = new JTextField();
-		
-		
+
 		textField.setBounds(369, 80, 154, 34);
 		viewStudentPanel.add(textField);
 		textField.setColumns(10);
-		
-		
+
 		JButton progessButtton = new JButton("See Result");
 		progessButtton.setBounds(254, 84, 117, 29);
-		
-		
+
 		JButton editStudentButton = new JButton("Edit");
 		editStudentButton.setBounds(25, 84, 117, 29);
-		
-		
+
 		JButton btnNewButton_1_1 = new JButton("Delete");
-		
+
 		btnNewButton_1_1.setBounds(139, 84, 117, 29);
 		editStudentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -207,11 +284,11 @@ public class StudentDashboard extends JPanel {
 		});
 		progessButtton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ViewProgess vp= new ViewProgess();
-			    vp.setVisible(true);
+				ViewProgess vp = new ViewProgess();
+				vp.setVisible(true);
 			}
 		});
-	
+
 		JLabel lblNewLabel_7_1 = new JLabel("seach");
 		lblNewLabel_7_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_7_1.setFont(new Font("Krub", Font.PLAIN, 12));
@@ -290,7 +367,7 @@ public class StudentDashboard extends JPanel {
 				String newPassword = new String(newPasswordField.getPassword());
 				String cPassword = new String(cPasswordfield.getPassword());
 				try {
-					System.out.println(user.getPassword());
+					
 
 					if (oldPassword.equals(user.getPassword())) {
 						Valid valid = new Valid();
@@ -341,11 +418,10 @@ public class StudentDashboard extends JPanel {
 
 		table_course = new JTable();
 		scrollPane_1.setViewportView(table_course);
-		
+
 		JButton addStudentReport = new JButton("Generate Report");
-		
+
 		addStudentReport.setBounds(25, 113, 160, 29);
-		
 
 		JButton editCourseButton = new JButton("Edit");
 		editCourseButton.setBounds(147, 77, 117, 29);
@@ -363,33 +439,42 @@ public class StudentDashboard extends JPanel {
 				cd.changePanne(layeredPane, settingPannel);
 			}
 		});
-		
+
 		dashboardButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cd.changePanne(layeredPane, dashboardPannel);
+				TotalData newData = cd.totalUsers();
+				data = newData;
+				totalTeacher = String.valueOf(data.totalTeacher);
+				totalStudent = String.valueOf(data.totalStudent);
+				totalCourse = String.valueOf(data.totalCourse);
+				totalStudentlabel.setText(totalStudent);
+				totalTeacherLabel.setText(totalTeacher);
+				totalCourseLabel.setText(totalCourse);
+
 			}
 		});
 		DefaultTableModel viewTeacherModel = null;
 		viewTeacherButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cd.changePanne(layeredPane, teacherPannel);
-				cd.viewData(table, "teacher",viewTeacherModel);
+				cd.viewData(table, "teacher", viewTeacherModel);
 
 			}
 		});
 		table.setEnabled(false);
-		
+
 		teacherSearch = new JTextField();
 		teacherSearch.setBounds(385, 65, 130, 28);
 		teacherPannel.add(teacherSearch);
 		teacherSearch.setColumns(10);
-		
+
 		JLabel lblSearch = new JLabel("search");
 		lblSearch.setFont(new Font("Krub", Font.PLAIN, 12));
 		lblSearch.setBounds(389, 52, 61, 16);
 		teacherPannel.add(lblSearch);
 		table_course.setEnabled(false);
-		DefaultTableModel courseModel=null;
+		DefaultTableModel courseModel = null;
 		viewCourseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cd.changePanne(layeredPane, viewCoursePannel);
@@ -442,7 +527,7 @@ public class StudentDashboard extends JPanel {
 		});
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			cd.editData();
+				cd.editData();
 			}
 		});
 		addCourseButton.addActionListener(new ActionListener() {
@@ -524,11 +609,11 @@ public class StudentDashboard extends JPanel {
 			}
 		});
 		DefaultTableModel viewStudentmodel = null;
-		
+
 		viewStudentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cd.changePanne(layeredPane, viewStudentPanel);
-				cd.viewData(studentTable, "student",viewStudentmodel );	
+				cd.viewData(studentTable, "student", viewStudentmodel);
 			}
 		});
 		addStudentReport.addActionListener(new ActionListener() {
@@ -537,14 +622,13 @@ public class StudentDashboard extends JPanel {
 				JTextField id = new JTextField();
 				JTextField grade = new JTextField();
 				JTextField moduleName = new JTextField();
-				Object[] fields = { "Enter Student id",id,"Module Name",moduleName, "GPA", gpa,
-						"Grade", grade
+				Object[] fields = { "Enter Student id", id, "Module Name", moduleName, "GPA", gpa, "Grade", grade
 
 				};
 				int result = JOptionPane.showConfirmDialog(null, fields, "Generate Report",
 						JOptionPane.OK_CANCEL_OPTION);
 				if (result == JOptionPane.OK_OPTION) {
-				try {
+					try {
 						String query = "INSERT INTO `studentresult` (`GPA`, `ModuleName`, `GRADE`, `student_id`) VALUES ( ?, ?, ?, ?)";
 						PreparedStatement pst = dc.pst(query);
 						pst.setString(1, gpa.getText());
@@ -554,15 +638,15 @@ public class StudentDashboard extends JPanel {
 						pst.execute();
 						JOptionPane.showMessageDialog(null, "Report recorded");
 					}
-					
 
-				 catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
+					catch (Exception ex) {
+						JOptionPane.showMessageDialog(null, ex.getMessage());
 
-				}
+					}
 				}
 			}
 		});
+
 		textField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -575,11 +659,10 @@ public class StudentDashboard extends JPanel {
 				cd.search(viewTeacherModel, table, teacherSearch.getText());
 			}
 		});
-	   if(user.getRole().equals("teacher"))
-	   {
+		if (user.getRole().equals("teacher")) {
 			viewStudentPanel.add(addStudentReport);
-	   }
-		
+		}
+
 		course_search = new JTextField();
 		course_search.addKeyListener(new KeyAdapter() {
 			@Override
@@ -590,12 +673,19 @@ public class StudentDashboard extends JPanel {
 		course_search.setBounds(398, 77, 130, 26);
 		viewCoursePannel.add(course_search);
 		course_search.setColumns(10);
-		
+		totalStudentlabel.setText(totalStudent);
+		totalTeacherLabel.setText(totalTeacher);
+		totalCourseLabel.setText(totalCourse);
+
+		JLabel lblNewLabel_13 = new JLabel("@copyrights herald college kathmandu");
+		lblNewLabel_13.setFont(new Font("Apple LiSung", Font.PLAIN, 10));
+		lblNewLabel_13.setBounds(378, 458, 162, 16);
+		dashboardPannel.add(lblNewLabel_13);
 		JLabel lblNewLabel_8 = new JLabel("Search");
 		lblNewLabel_8.setFont(new Font("Krub", Font.PLAIN, 12));
 		lblNewLabel_8.setBounds(398, 62, 61, 16);
 		viewCoursePannel.add(lblNewLabel_8);
-	
+
 		if (user.getRole().equals("admin")) {
 			teacherPannel.add(addTeacherButton);
 			teacherPannel.add(btnEdit);

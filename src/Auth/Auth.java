@@ -7,13 +7,15 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import Connector.DatabaseConnector;
+import Controller.ChangeData;
 import Exceptions.InvalidEmail;
 import Exceptions.PasswordDonotMatch;
 import Exceptions.UserAlreadyExist;
 import Exceptions.UserNotFound;
+import Models.TotalData;
 import Models.Usermodel;
 import Pages.LoginPage;
-import Pages.StudentDashboard;
+import Pages.MainDashboard;
 import Validator.Valid;
 
 
@@ -27,6 +29,7 @@ public class Auth {
 	
     public void login(String username,String password, JPanel mainPanel,JFrame frame){
     	Usermodel user=new Usermodel();
+    	ChangeData cd=new ChangeData(dc);
         if(username.isEmpty() && password.isEmpty())
 				{
 					JOptionPane.showMessageDialog(null, "Please input usename or password");
@@ -47,25 +50,24 @@ public class Auth {
 							user.setPassword(rs.getString("password"));
 							user.setEmail(rs.getString("email"));
 							user.setLastName(rs.getString("lastname"));
-							
+							mainPanel.setVisible(false);
+						   final TotalData totalData=cd.totalUsers();
+							new MainDashboard(frame,user,dc,totalData);
 							if(user.getRole().equals("student"))
 							{
-								mainPanel.setVisible(false);
-								new StudentDashboard(frame,user,dc);
+								
 								JOptionPane.showMessageDialog(null, "Login in as Student");
 								 
 							}
 							else if(user.getRole().equals("teacher"))
 							{
-								mainPanel.setVisible(false);
-								new StudentDashboard(frame,user,dc);
+								
 								JOptionPane.showMessageDialog(null, "Login in as Teacher");
 									
 							}
 							else if(user.getRole().equals("admin"))
 							{
-								mainPanel.setVisible(false);
-								new StudentDashboard(frame,user,dc);
+								
 								JOptionPane.showMessageDialog(null, "Welcome admin");
 							}
 							else 

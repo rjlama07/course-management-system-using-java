@@ -44,7 +44,6 @@ public class Greet {
     {
         Greet datetime=new Greet();
         int time=Integer.parseInt(datetime.getDate("time"));
-        System.out.println(time);
         String greet= datetime.day(time);
         return greet+" "+name;
     }
