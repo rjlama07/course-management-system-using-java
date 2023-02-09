@@ -36,7 +36,7 @@ public class ChangeData {
 	}
 	
 	
-   //function to change pannel in layered pannel
+   //function to change panel in layered panel
 	public void changePanne(JLayeredPane layeredPane,JPanel panel ) {
 		layeredPane.removeAll();
 		layeredPane.add(panel);
@@ -160,11 +160,11 @@ public class ChangeData {
 				pst.setString(2, lastname.getText());
 				pst.setString(3, id.getText());
 				pst.execute();
-				JOptionPane.showMessageDialog(null, "Sucessfully edited teacher. Refresh to see changes");
+				JOptionPane.showMessageDialog(null, "Sucessfully edited. Refresh to see changes");
 			}
 
 		} catch (Exception ex) {
-			
+			JOptionPane.showMessageDialog(null, ex.getMessage());
 
 		}
 	}
@@ -289,7 +289,7 @@ public class ChangeData {
 			JTextField email = new JTextField();
 			Object[] fields = { "firstname", firstname, "lastname", lastname, "Email", email, "Set Password",
 					password };
-			int result = JOptionPane.showConfirmDialog(null, fields, "Add teacher",
+			int result = JOptionPane.showConfirmDialog(null, fields, "Add User",
 					JOptionPane.OK_CANCEL_OPTION);
 			if (result == JOptionPane.OK_OPTION) {
 				String pass=new String(password.getPassword());
@@ -303,7 +303,7 @@ public class ChangeData {
 					pst.setString(4, firstname.getText());
 					pst.setString(5, lastname.getText());
 					pst.execute();
-					JOptionPane.showMessageDialog(null, "Sucessfully added . Refresh to see changes");
+					JOptionPane.showMessageDialog(null, "Sucessfully added. Refresh to see changes");
 				}
 				else {
 					throw new InvalidEmail("Invalid email or password");
@@ -334,7 +334,7 @@ public class ChangeData {
 				pst.setString(2, totalYear.getText());
 				pst.setString(3, seats.getText());
 				pst.execute();
-				JOptionPane.showMessageDialog(null, "Sucessfully added course. Refresh to see changes");
+				JOptionPane.showMessageDialog(null, "Sucessfully added. Refresh to see changes");
 			}
 
 		} catch (Exception ex) {
@@ -365,7 +365,7 @@ public class ChangeData {
 				pst.setString(3, seats.getText());
 				pst.setString(4, id.getText());
 				pst.execute();
-				JOptionPane.showMessageDialog(null, "Sucessfully edited course. Refresh to see changes");
+				JOptionPane.showMessageDialog(null, "Sucessfully edited . Refresh to see changes");
 			}
 
 		} catch (Exception ex) {
