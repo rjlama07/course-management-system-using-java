@@ -37,7 +37,6 @@ public class MainApp {
 	 * Initialize the contents of the frame.s
 	 */
 	private void initialize() {
-		
 		frame = new JFrame();
 		frame.setTitle("Course Management System");
 		frame.setResizable(false);
@@ -48,9 +47,6 @@ public class MainApp {
 		panel.setLayout(null);
 		DatabaseConnector dc=new DatabaseConnector();
 		new SplashScreen(frame,dc);
-		
-		
-
 	}
 
 }

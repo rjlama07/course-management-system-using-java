@@ -1,23 +1,15 @@
 package Pages;
 
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
-import com.mysql.cj.jdbc.result.ResultSetMetaData;
-
 import Connector.DatabaseConnector;
-import Exceptions.NoRecordFound;
-
+import Controller.ChangeData;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -58,62 +50,14 @@ public class ViewProgess extends JFrame {
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(411, 35, 183, 23);
 		panel.add(textArea);
+		final DefaultTableModel model=null;
+		ChangeData cd=new ChangeData(dc);
 		
 		JButton btnNewButton = new JButton("search");
 		btnNewButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				boolean isData=false;
-				try {
-					String query = "SELECT * from studentresult WHERE student_id=?;";
-					String query1 = "SELECT firstname,lastname FROM `users` WHERE id=?";
-					PreparedStatement pst = dc.pst(query);
-					pst.setString(1,textArea.getText());
-					ResultSet rs = pst.executeQuery(); 
-						ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-						DefaultTableModel model = (DefaultTableModel) table.getModel();
-						model.setRowCount(0); // Clear the table model
-						int column = rsmd.getColumnCount();
-						String[] columnName = new String[column];
-						for (int i = 0; i < column; i++) {
-							columnName[i] = rsmd.getColumnName(i + 1);
-
-						}
-						model.setColumnIdentifiers(columnName);
-						String student_id, moduleName, gpa, grade;
-
-						List<String> myList = new ArrayList<>();
-						while (rs.next()) {
-							isData=true;
-							student_id = rs.getString(1);
-							moduleName = rs.getString(2);
-							gpa = rs.getString(3);
-							grade = rs.getString(4);
-							myList.add(student_id);
-							myList.add(moduleName);
-							myList.add(gpa);
-							myList.add(grade);
-							Vector<String> row = new Vector<String>(myList);
-							myList = new ArrayList<>();
-							model.addRow(row);
-						}
-						if(!isData)
-						{
-							throw new NoRecordFound("No record found for the given id");
-						}
-					PreparedStatement pst1=dc.pst(query1);
-					pst1.setString(1,textArea.getText());
-					ResultSet rs1=pst1.executeQuery();
-					if(rs1.next()) {
-						   String username=rs1.getString("firstname")+" "+rs1.getString("lastname");
-						   studentNamelable.setText(username);
-						}
-					pst.close();
-
-				} catch (Exception ex) {
-					System.out.println(ex);
-					JOptionPane.showMessageDialog(null, ex.getMessage());
-				}
+			cd.getReasult(table, model, textArea.getText(), studentNamelable);
 			}
 		});
 		btnNewButton.setBounds(514, 62, 87, 23);

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,6 +23,7 @@ import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 import Connector.DatabaseConnector;
 import Exceptions.InvalidEmail;
+import Exceptions.NoRecordFound;
 import Exceptions.PasswordDonotMatch;
 import Models.TotalData;
 import Models.Usermodel;
@@ -43,7 +45,60 @@ public class ChangeData {
 		layeredPane.repaint();
 		layeredPane.revalidate();
 	}
-	
+	//result view
+	public void getReasult(JTable table,DefaultTableModel model,String id,JLabel studentNamelable) {
+		boolean isData=false;
+		try {
+			String query = "SELECT * from studentresult WHERE student_id=?;";
+			String query1 = "SELECT firstname,lastname FROM `users` WHERE id=?";
+			PreparedStatement pst = dc.pst(query);
+			pst.setString(1,id);
+			ResultSet rs = pst.executeQuery(); 
+				ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+				 model = (DefaultTableModel) table.getModel();
+				model.setRowCount(0); // Clear the table model
+				int column = rsmd.getColumnCount();
+				String[] columnName = new String[column];
+				for (int i = 0; i < column; i++) {
+					columnName[i] = rsmd.getColumnName(i + 1);
+
+				}
+				model.setColumnIdentifiers(columnName);
+				String student_id, moduleName, gpa, grade;
+
+				List<String> myList = new ArrayList<>();
+				while (rs.next()) {
+					isData=true;
+					student_id = rs.getString(1);
+					moduleName = rs.getString(2);
+					gpa = rs.getString(3);
+					grade = rs.getString(4);
+					myList.add(student_id);
+					myList.add(moduleName);
+					myList.add(gpa);
+					myList.add(grade);
+					Vector<String> row = new Vector<String>(myList);
+					myList = new ArrayList<>();
+					model.addRow(row);
+				}
+				if(!isData)
+				{
+					throw new NoRecordFound("No record found for the given id");
+				}
+			PreparedStatement pst1=dc.pst(query1);
+			pst1.setString(1,id);
+			ResultSet rs1=pst1.executeQuery();
+			if(rs1.next()) {
+				   String username=rs1.getString("firstname")+" "+rs1.getString("lastname");
+				   studentNamelable.setText(username);
+				}
+			pst.close();
+
+		} catch (Exception ex) {
+			System.out.println(ex);
+			JOptionPane.showMessageDialog(null, ex.getMessage());
+		}
+	}
 	//change PassWord 
 	
 	public void changePassword(Usermodel user,String newPassword,String cPassword,String oldPassword) {
