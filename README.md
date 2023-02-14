@@ -1,6 +1,6 @@
 # course-management-system
 
-Thid is course management system made using java and swing as a framework. 
+This is course management system made using java and swing as a framework. 
 
 # Splash Screen
 <img width="664" alt="Screenshot 2023-02-06 at 3 33 15 PM" src="https://user-images.githubusercontent.com/109976988/216939987-690ba412-b7e9-48d0-aed2-435f9cca780f.png">
